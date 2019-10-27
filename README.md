@@ -1,4 +1,8 @@
-Eclipse Public License 2.0
+# Desbroces Pontevedra
 
-THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE PUBLIC LICENSE ("AGREEMENT"). ANY USE, REPRODUCTION OR DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT'S ACCEPTANCE OF THIS AGREEMENT.
+Sitio web para Desbroces Pontevedra: especialistas en limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. Basado en la plantilla *business-frontpage* de Bootstrap 4.
+
+## Licencia
+
+Este proyecto se publica bajo la licencia Eclipse Public License 2.0.
 
