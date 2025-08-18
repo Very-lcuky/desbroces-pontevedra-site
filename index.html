@@ -1,0 +1,109 @@
+---
+layout: default
+---
+
+<div class="row">
+  <div class="col-md-8 mb-5">
+    <h1>Desbroces Pontevedra</h1>
+    <hr />
+    <p>
+      En <strong>Desbroces Pontevedra</strong> somos especialistas en limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. Ofrecemos servicios profesionales de <strong>desbroce, poda, jardinería</strong> y limpieza de terrenos tanto para particulares como empresas.
+    </p>
+    <p>
+      Contamos con maquinaria moderna y un equipo cualificado para asegurar un trabajo eficaz, rápido y seguro. Nuestro compromiso es dejar tu terreno en las mejores condiciones, ya sea para su uso, venta o conservación.
+    </p>
+    <a class="btn btn-success btn-lg" href="/contact/">📩 Pide tu presupuesto</a>
+  </div>
+  {% include sidebar.html %}
+</div>
+
+<!-- Conectar con MetaMask -->
+<div id="connect-container" class="row">
+  <div class="col-md-12">
+    <button id="connectButton" class="btn btn-primary">Conectar con MetaMask</button>
+    <p id="status">Por favor, conéctate a MetaMask.</p>
+    <p id="accountAddress" style="display: none;"></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 mb-5">
+    <div class="card border-0 shadow h-100">
+      <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Desbroces" alt="Desbroce de fincas" />
+      <div class="card-body">
+        <h4 class="card-title">Desbroces de Fincas</h4>
+        <p class="card-text">
+          Eliminamos maleza, hierbas y vegetación densa para recuperar y mantener terrenos rurales o urbanos.
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="/services/" class="btn btn-success">Ver servicios</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-5">
+    <div class="card border-0 shadow h-100">
+      <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Poda" alt="Poda de árboles" />
+      <div class="card-body">
+        <h4 class="card-title">Poda y Jardinería</h4>
+        <p class="card-text">
+          Mantenimiento de árboles, setos y jardines con podas profesionales y cuidado estético de zonas verdes.
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="/services/" class="btn btn-success">Ver servicios</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-5">
+    <div class="card border-0 shadow h-100">
+      <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Maquinaria" alt="Maquinaria profesional" />
+      <div class="card-body">
+        <h4 class="card-title">Maquinaria Profesional</h4>
+        <p class="card-text">
+          Usamos tractores, desbrozadoras y herramientas de última generación para trabajos exigentes y seguros.
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="/contact/" class="btn btn-success">Solicitar información</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts de MetaMask y Ethers.js -->
+<script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+<script>
+  const connectButton = document.getElementById('connectButton');
+  const statusElement = document.getElementById('status');
+  const accountAddress = document.getElementById('accountAddress');
+
+  // Verificar si MetaMask está disponible
+  if (typeof window.ethereum !== 'undefined') {
+    statusElement.innerText = 'MetaMask está disponible.';
+
+    // Función para conectarse a MetaMask
+    connectButton.addEventListener('click', async () => {
+      try {
+        // Solicitar acceso a las cuentas de MetaMask
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        // Crear un proveedor de Ethers.js usando MetaMask
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const userAddress = await signer.getAddress();
+
+        // Mostrar la dirección de la cuenta conectada
+        statusElement.innerText = 'Conectado con MetaMask';
+        accountAddress.innerText = `Dirección de la cuenta: ${userAddress}`;
+        accountAddress.style.display = 'block';
+      } catch (error) {
+        console.error(error);
+        statusElement.innerText = 'Hubo un error al conectar con MetaMask.';
+      }
+    });
+  } else {
+    statusElement.innerText = 'MetaMask no está instalado. Por favor instala MetaMask.';
+  }
+</script>
+
