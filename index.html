@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Desbroces Pontevedra
 ---
 
 <div class="row">
@@ -21,61 +22,57 @@ layout: default
   </div>
 </div>
 
-<!-- Conectar con MetaMask -->
-<div id="connect-container" class="row my-4">
-  <div class="col-md-12">
-    <button id="connectButton" class="btn btn-primary">Conectar con MetaMask</button>
-    <p id="status">Por favor, conéctate a MetaMask.</p>
-    <p id="accountAddress" style="display: none;"></p>
-  </div>
-</div>
-
 <!-- Sección de servicios -->
-<div class="row">
-  <!-- Servicio 1 -->
-  <div class="col-md-4 mb-5">
-    <div class="card border-0 shadow h-100">
-      <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Desbroces" alt="Desbroce de fincas" />
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <img src="https://via.placeholder.com/400x300?text=Desbroces" class="card-img-top" alt="Desbroce de fincas" />
       <div class="card-body">
-        <h4 class="card-title">Desbroces de Fincas</h4>
+        <h5 class="card-title">Desbroces de Fincas</h5>
         <p class="card-text">Eliminamos maleza, hierbas y vegetación densa para recuperar y mantener terrenos rurales o urbanos.</p>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bg-transparent border-top-0">
         <a href="/services/" class="btn btn-success">Ver servicios</a>
       </div>
     </div>
   </div>
 
-  <!-- Servicio 2 -->
-  <div class="col-md-4 mb-5">
-    <div class="card border-0 shadow h-100">
-      <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Poda" alt="Poda de árboles" />
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <img src="https://via.placeholder.com/400x300?text=Poda" class="card-img-top" alt="Poda de árboles" />
       <div class="card-body">
-        <h4 class="card-title">Poda y Jardinería</h4>
+        <h5 class="card-title">Poda y Jardinería</h5>
         <p class="card-text">Mantenimiento de árboles, setos y jardines con podas profesionales y cuidado estético de zonas verdes.</p>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bg-transparent border-top-0">
         <a href="/services/" class="btn btn-success">Ver servicios</a>
       </div>
     </div>
   </div>
 
-  <!-- Servicio 3 -->
-  <div class="col-md-4 mb-5">
-    <div class="card border-0 shadow h-100">
-      <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Maquinaria" alt="Maquinaria profesional" />
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+      <img src="https://via.placeholder.com/400x300?text=Maquinaria" class="card-img-top" alt="Maquinaria profesional" />
       <div class="card-body">
-        <h4 class="card-title">Maquinaria Profesional</h4>
+        <h5 class="card-title">Maquinaria Profesional</h5>
         <p class="card-text">Usamos tractores, desbrozadoras y herramientas de última generación para trabajos exigentes y seguros.</p>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bg-transparent border-top-0">
         <a href="/contact/" class="btn btn-success">Solicitar información</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Scripts de MetaMask y Ethers.js -->
+<!-- MetaMask Connect -->
+<div id="connect-container" class="row my-5">
+  <div class="col-md-12 text-center">
+    <button id="connectButton" class="btn btn-primary btn-lg">Conectar con MetaMask</button>
+    <p id="status" class="mt-3">Por favor, conéctate a MetaMask.</p>
+    <p id="accountAddress" style="display: none; font-weight: bold;"></p>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
 <script>
   const connectButton = document.getElementById('connectButton');
@@ -103,6 +100,7 @@ layout: default
     });
   } else {
     statusElement.innerText = 'MetaMask no está instalado. Por favor instala MetaMask.';
+    connectButton.disabled = true;
   }
 </script>
 
