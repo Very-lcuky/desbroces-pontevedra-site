@@ -14,11 +14,15 @@ layout: default
     </p>
     <a class="btn btn-success btn-lg" href="/contact/">📩 Pide tu presupuesto</a>
   </div>
-  {% include sidebar.html %}
+
+  <!-- Sidebar incluido -->
+  <div class="col-md-4 mb-5">
+    {% include sidebar.html %}
+  </div>
 </div>
 
 <!-- Conectar con MetaMask -->
-<div id="connect-container" class="row">
+<div id="connect-container" class="row my-4">
   <div class="col-md-12">
     <button id="connectButton" class="btn btn-primary">Conectar con MetaMask</button>
     <p id="status">Por favor, conéctate a MetaMask.</p>
@@ -26,43 +30,43 @@ layout: default
   </div>
 </div>
 
+<!-- Sección de servicios -->
 <div class="row">
+  <!-- Servicio 1 -->
   <div class="col-md-4 mb-5">
     <div class="card border-0 shadow h-100">
       <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Desbroces" alt="Desbroce de fincas" />
       <div class="card-body">
         <h4 class="card-title">Desbroces de Fincas</h4>
-        <p class="card-text">
-          Eliminamos maleza, hierbas y vegetación densa para recuperar y mantener terrenos rurales o urbanos.
-        </p>
+        <p class="card-text">Eliminamos maleza, hierbas y vegetación densa para recuperar y mantener terrenos rurales o urbanos.</p>
       </div>
       <div class="card-footer">
         <a href="/services/" class="btn btn-success">Ver servicios</a>
       </div>
     </div>
   </div>
+
+  <!-- Servicio 2 -->
   <div class="col-md-4 mb-5">
     <div class="card border-0 shadow h-100">
       <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Poda" alt="Poda de árboles" />
       <div class="card-body">
         <h4 class="card-title">Poda y Jardinería</h4>
-        <p class="card-text">
-          Mantenimiento de árboles, setos y jardines con podas profesionales y cuidado estético de zonas verdes.
-        </p>
+        <p class="card-text">Mantenimiento de árboles, setos y jardines con podas profesionales y cuidado estético de zonas verdes.</p>
       </div>
       <div class="card-footer">
         <a href="/services/" class="btn btn-success">Ver servicios</a>
       </div>
     </div>
   </div>
+
+  <!-- Servicio 3 -->
   <div class="col-md-4 mb-5">
     <div class="card border-0 shadow h-100">
       <img class="card-img-top" src="https://via.placeholder.com/400x300?text=Maquinaria" alt="Maquinaria profesional" />
       <div class="card-body">
         <h4 class="card-title">Maquinaria Profesional</h4>
-        <p class="card-text">
-          Usamos tractores, desbrozadoras y herramientas de última generación para trabajos exigentes y seguros.
-        </p>
+        <p class="card-text">Usamos tractores, desbrozadoras y herramientas de última generación para trabajos exigentes y seguros.</p>
       </div>
       <div class="card-footer">
         <a href="/contact/" class="btn btn-success">Solicitar información</a>
@@ -78,22 +82,17 @@ layout: default
   const statusElement = document.getElementById('status');
   const accountAddress = document.getElementById('accountAddress');
 
-  // Verificar si MetaMask está disponible
   if (typeof window.ethereum !== 'undefined') {
     statusElement.innerText = 'MetaMask está disponible.';
 
-    // Función para conectarse a MetaMask
     connectButton.addEventListener('click', async () => {
       try {
-        // Solicitar acceso a las cuentas de MetaMask
         await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-        // Crear un proveedor de Ethers.js usando MetaMask
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const userAddress = await signer.getAddress();
 
-        // Mostrar la dirección de la cuenta conectada
         statusElement.innerText = 'Conectado con MetaMask';
         accountAddress.innerText = `Dirección de la cuenta: ${userAddress}`;
         accountAddress.style.display = 'block';
