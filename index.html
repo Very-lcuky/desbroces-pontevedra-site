@@ -30,7 +30,7 @@ layout: default
         </p>
       </div>
       <div class="card-footer">
-        <a href="#contact" class="btn btn-primary">Solicitar presupuesto</a> <!-- CORREGIDO -->
+        <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ layout: default
         </p>
       </div>
       <div class="card-footer">
-        <a href="#contact" class="btn btn-primary">Ver más</a> <!-- CORREGIDO -->
+        <a href="#contacto" class="btn btn-primary">Ver más</a>
       </div>
     </div>
   </div>
@@ -60,7 +60,7 @@ layout: default
         </p>
       </div>
       <div class="card-footer">
-        <a href="#contact" class="btn btn-primary">Solicitar información</a> <!-- CORREGIDO -->
+        <a href="#contacto" class="btn btn-primary">Solicitar información</a>
       </div>
     </div>
   </div>
@@ -68,10 +68,15 @@ layout: default
 <!-- /.row -->
 
 <!-- Sección de contacto -->
-<div id="contact" class="my-5 text-center">
+<div id="contacto" class="my-5 text-center">
   <h2>¿Necesitas un presupuesto?</h2>
   <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-  <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
+  <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
+
+  <!-- Botón para conectar MetaMask aquí -->
+  <br><br>
+  <button id="connectMetaMask" class="btn btn-warning btn-lg">Conectar MetaMask</button>
+  <p id="metaMaskStatus" style="margin-top: 10px;"></p>
 </div>
 
 <!-- Integración con Alchemy y Viem -->
@@ -99,46 +104,23 @@ layout: default
   obtenerBloque();
 </script>
 
-<!-- MetaMask Integration: Floating button at the bottom -->
+<!-- Conexión a MetaMask -->
 <script>
-  if (typeof window.ethereum !== 'undefined') {
-    console.log('MetaMask está instalado!');
-    const connectButton = document.createElement('button');
-    connectButton.innerHTML = 'Conectar MetaMask';
-    connectButton.style.position = 'fixed';
-    connectButton.style.bottom = '20px';
-    connectButton.style.right = '20px';
-    connectButton.style.padding = '10px 20px';
-    connectButton.style.backgroundColor = '#f6851b';
-    connectButton.style.color = 'white';
-    connectButton.style.borderRadius = '5px';
-    connectButton.style.fontSize = '16px';
-    connectButton.style.zIndex = '1000';
-    document.body.appendChild(connectButton);
-
-    const accountInfo = document.createElement('div');
-    accountInfo.style.textAlign = 'center';
-    accountInfo.style.marginTop = '20px';
-    accountInfo.style.fontSize = '18px';
-    document.body.appendChild(accountInfo);
-
-    connectButton.addEventListener('click', async () => {
+  document.getElementById('connectMetaMask').addEventListener('click', async () => {
+    if (typeof window.ethereum !== 'undefined') {
       try {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        accountInfo.innerHTML = `Conectado con la cuenta: ${accounts[0]}`;
-        console.log('Cuenta conectada:', accounts[0]);
+        document.getElementById('metaMaskStatus').innerHTML = `Conectado con la cuenta: ${accounts[0]}`;
       } catch (error) {
-        console.error('No se pudo conectar con MetaMask:', error);
-        accountInfo.innerHTML = 'Error al conectar con MetaMask';
+        document.getElementById('metaMaskStatus').innerHTML = 'Error al conectar MetaMask';
+        console.error('Error al conectar MetaMask:', error);
       }
-    });
-  } else {
-    console.log('MetaMask no está instalado');
-    const accountInfo = document.createElement('div');
-    accountInfo.innerHTML = 'Por favor, instala MetaMask.';
-    document.body.appendChild(accountInfo);
-  }
+    } else {
+      document.getElementById('metaMaskStatus').innerHTML = 'Por favor, instala MetaMask.';
+    }
+  });
 </script>
+
 </body>
 </html>
 
