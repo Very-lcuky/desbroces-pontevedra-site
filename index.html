@@ -1,149 +1,62 @@
----
-layout: default
-title: Inicio
----
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Desbroces Pontevedra - Inicio</title>
-  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* Estilos básicos */
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #234e52;
-      color: #fff;
-      padding: 30px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-    }
-    .navbar {
-      display: flex;
-      justify-content: center;
-      background-color: #2c7a7b;
-      padding: 10px;
-    }
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-    .main-content {
-      padding: 30px;
-    }
-    .service-section {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-    }
-    .service {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      width: 30%;
-      text-align: center;
-    }
-    .service h3 {
-      margin-bottom: 10px;
-    }
-    footer {
-      background-color: #234e52;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
-    footer a {
-      color: white;
-      text-decoration: none;
-    }
-  </style>
+  <title>Desbroces Pontevedra - Limpieza y mantenimiento de fincas</title>
 </head>
+
 <body>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/services.html">Services</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
   <header>
     <h1>Desbroces Pontevedra</h1>
     <p>Especialistas en limpieza y mantenimiento de fincas, jardines y montes en toda la provincia</p>
   </header>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/about.html">About</a>
-    <a href="/services.html">Services</a>
-    <a href="/contact.html">Contact</a>
-  </nav>
-
-  <div class="main-content">
-    <!-- ¿Qué hacemos? Section -->
-    <section id="about">
+  <main>
+    <section>
       <h2>¿Qué hacemos?</h2>
-      <p>
-        En Desbroces Pontevedra somos especialistas en limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. 
-        Ofrecemos servicios profesionales de desbroce, poda, jardinería y limpieza de terrenos tanto para particulares como empresas.
-      </p>
-      <p>
-        Contamos con maquinaria moderna y un equipo cualificado para asegurar un trabajo eficaz, rápido y seguro. 
-        Nuestro compromiso es dejar tu terreno en las mejores condiciones, ya sea para su uso, venta o conservación.
-      </p>
-      <a class="btn btn-primary btn-lg" href="/contact.html">Contacta con nosotros &raquo;</a>
+      <p>En Desbroces Pontevedra somos especialistas en limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. Ofrecemos servicios profesionales de desbroce, poda, jardinería y limpieza de terrenos tanto para particulares como empresas.</p>
+      <p>Contamos con maquinaria moderna y un equipo cualificado para asegurar un trabajo eficaz, rápido y seguro. Nuestro compromiso es dejar tu terreno en las mejores condiciones, ya sea para su uso, venta o conservación.</p>
+      <a href="/contact.html" class="button">Contacta con nosotros &raquo;</a>
     </section>
 
-    <!-- Services Section -->
-    <section id="services">
+    <section>
       <h2>Servicios</h2>
-      <div class="service-section">
-        <div class="service">
-          <h3>Desbroce de fincas</h3>
-          <img src="/assets/images/desbroce.jpg" alt="Desbroce de fincas" />
-          <p>
-            Eliminamos maleza, hierbas y vegetación densa para recuperar y mantener terrenos rurales o urbanos.
-          </p>
-          <a href="/services.html#desbroce" class="btn btn-primary">Más información</a>
-        </div>
+      <div>
+        <h3>Desbroce de fincas</h3>
+        <p>Eliminamos maleza, hierbas y vegetación densa para recuperar y mantener terrenos rurales o urbanos.</p>
+        <a href="/services.html#desbroce">Más información</a>
+      </div>
 
-        <div class="service">
-          <h3>Poda de árboles</h3>
-          <img src="/assets/images/poda.jpg" alt="Poda de árboles" />
-          <p>
-            Mantenimiento profesional de árboles, setos y jardines con podas para mejorar la salud y estética.
-          </p>
-          <a href="/services.html#poda" class="btn btn-primary">Más información</a>
-        </div>
+      <div>
+        <h3>Poda de árboles</h3>
+        <p>Mantenimiento profesional de árboles, setos y jardines con podas para mejorar la salud y estética.</p>
+        <a href="/services.html#poda">Más información</a>
+      </div>
 
-        <div class="service">
-          <h3>Maquinaria profesional</h3>
-          <img src="/assets/images/maquinaria.jpg" alt="Maquinaria profesional" />
-          <p>
-            Usamos tractores, desbrozadoras y herramientas de última generación para trabajos exigentes y seguros.
-          </p>
-          <a href="/contact.html" class="btn btn-primary">Solicitar información</a>
-        </div>
+      <div>
+        <h3>Maquinaria profesional</h3>
+        <p>Usamos tractores, desbrozadoras y herramientas de última generación para trabajos exigentes y seguros.</p>
+        <a href="/services.html#maquinaria">Solicitar información</a>
       </div>
     </section>
-  </div>
+  </main>
 
   <footer>
     <p>© 2025 Desbroces Pontevedra - Todos los derechos reservados</p>
-    <p>
-      <a href="/contact.html">Contáctanos</a> | 
-      <a href="/aviso-legal.html">Aviso Legal</a> | 
-      <a href="/politica-privacidad.html">Política de Privacidad</a>
-    </p>
   </footer>
 </body>
+
 </html>
 
