@@ -74,7 +74,7 @@ layout: default
   <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
 </div>
 
-<!-- Integración con Alchemy y Viem -->
+<!-- Integración con Alchemy, Viem y MetaMask -->
 <script type="module">
   import { createPublicClient, http } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem.min.js";
   import { base } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem/chains.js";
@@ -97,7 +97,47 @@ layout: default
   }
 
   obtenerBloque();
+
+  // Conectar MetaMask
+  if (typeof window.ethereum !== "undefined") {
+    console.log("MetaMask está instalado!");
+  } else {
+    alert("Por favor, instala MetaMask para interactuar con esta página.");
+  }
+
+  // Obtener la dirección y saldo de MetaMask
+  const connectButton = document.createElement("button");
+  connectButton.innerHTML = "Conectar con MetaMask";
+  connectButton.style.position = "absolute";
+  connectButton.style.top = "20px";
+  connectButton.style.left = "20px";
+  document.body.appendChild(connectButton);
+
+  connectButton.addEventListener("click", async () => {
+    if (typeof window.ethereum !== "undefined") {
+      try {
+        // Solicitar acceso a las cuentas de MetaMask
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        
+        const account = accounts[0];
+        alert("Cuenta conectada: " + account);
+        
+        // Crear una instancia de Ethers.js
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        // Obtener el saldo de la cuenta
+        const balance = await provider.getBalance(account);
+        const balanceInEth = ethers.utils.formatEther(balance);
+        alert("Saldo: " + balanceInEth + " ETH");
+      } catch (error) {
+        console.error("Error al conectar con MetaMask", error);
+      }
+    } else {
+      alert("MetaMask no está instalado.");
+    }
+  });
 </script>
+
 </body>
 </html>
 
