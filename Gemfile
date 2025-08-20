@@ -1,4 +1,5 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'jekyll', '~> 4.0'
-gem 'minima', '~> 2.5'
+gem "jekyll", "~> 4.3.3"
+gem "webrick", "~> 1.8"
+

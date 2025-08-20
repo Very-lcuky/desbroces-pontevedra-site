@@ -85,15 +85,35 @@
       <a href="/_pages/contact.html" class="button">Solicitar información</a>
     </section>
 
+    <!-- MetaMask -->
     <section>
       <h2>Conectar con MetaMask</h2>
-      <p>MetaMask está disponible.</p>
+      <p id="metamask-status">MetaMask no está disponible.</p>
+      <button id="connect-metamask" class="button">Conectar MetaMask</button>
     </section>
   </main>
 
   <footer>
     <p>© 2025 Desbroces Pontevedra - Todos los derechos reservados</p>
   </footer>
+
+  <script>
+    // Detectar MetaMask
+    if (typeof window.ethereum !== 'undefined') {
+      document.getElementById('metamask-status').textContent = "MetaMask está disponible.";
+      document.getElementById('connect-metamask').addEventListener('click', () => {
+        window.ethereum.request({ method: 'eth_requestAccounts' })
+          .then(accounts => {
+            alert(`Conectado con la cuenta: ${accounts[0]}`);
+          })
+          .catch(error => {
+            console.error('Error al conectar con MetaMask', error);
+          });
+      });
+    } else {
+      document.getElementById('metamask-status').textContent = "MetaMask no está disponible. Por favor, instálalo.";
+    }
+  </script>
 </body>
 </html>
 
