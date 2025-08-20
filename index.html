@@ -1,143 +1,61 @@
----
-layout: default
----
-
-<div class="row">
-  <div class="col-md-8 mb-5">
-    <h2>¿Quiénes somos?</h2>
-    <hr />
-    <p>
-      En <strong>Desbroces Pontevedra</strong> nos especializamos en la limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. 
-      Ofrecemos soluciones rápidas, eficaces y seguras tanto a particulares como a empresas.
-    </p>
-    <p>
-      Contamos con maquinaria profesional y un equipo cualificado que garantiza resultados óptimos, ya sea para preparar un terreno, conservarlo o ponerlo a la venta.
-    </p>
-    <a class="btn btn-primary btn-lg" href="#servicios">Ver Servicios &raquo;</a>
-  </div>
-  {% include sidebar.html %}
-</div>
-<!-- /.row -->
-
-<div class="row" id="servicios">
-  <div class="col-md-4 mb-5">
-    <div class="card border-0 shadow h-100">
-      <img class="card-img-top" src="assets/img/desbroce.jpg" alt="Desbroce de fincas" />
-      <div class="card-body">
-        <h4 class="card-title">Desbroce de fincas</h4>
-        <p class="card-text">
-          Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desbroces Pontevedra</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 mb-5">
+        <h2>¿Quiénes somos?</h2>
+        <hr />
+        <p>
+          En <strong>Desbroces Pontevedra</strong> nos especializamos en la limpieza y mantenimiento de fincas, jardines y montes en toda la provincia.
+          Ofrecemos soluciones rápidas, eficaces y seguras tanto a particulares como a empresas.
         </p>
       </div>
-      <div class="card-footer">
-        <a href="#contact" class="btn btn-primary">Solicitar presupuesto</a> <!-- CORREGIDO -->
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h3>Conectar con MetaMask</h3>
+        <button id="connectButton" class="btn btn-primary">Conectar MetaMask</button>
+        <div id="accountInfo" style="margin-top: 20px;"></div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-4 mb-5">
-    <div class="card border-0 shadow h-100">
-      <img class="card-img-top" src="assets/img/poda.jpg" alt="Poda de árboles" />
-      <div class="card-body">
-        <h4 class="card-title">Poda de árboles</h4>
-        <p class="card-text">
-          Realizamos podas estéticas y de mantenimiento para árboles, setos y zonas verdes.
-        </p>
-      </div>
-      <div class="card-footer">
-        <a href="#contact" class="btn btn-primary">Ver más</a> <!-- CORREGIDO -->
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 mb-5">
-    <div class="card border-0 shadow h-100">
-      <img class="card-img-top" src="assets/img/maquinaria.jpg" alt="Maquinaria profesional" />
-      <div class="card-body">
-        <h4 class="card-title">Maquinaria profesional</h4>
-        <p class="card-text">
-          Trabajamos con desbrozadoras, tractores y herramientas modernas para ofrecer eficiencia y seguridad.
-        </p>
-      </div>
-      <div class="card-footer">
-        <a href="#contact" class="btn btn-primary">Solicitar información</a> <!-- CORREGIDO -->
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /.row -->
-
-<!-- Sección de contacto -->
-<div id="contact" class="my-5 text-center">
-  <h2>¿Necesitas un presupuesto?</h2>
-  <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-  <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
-</div>
-
-<!-- Integración con Alchemy, Viem y MetaMask -->
-<script type="module">
-  import { createPublicClient, http } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem.min.js";
-  import { base } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem/chains.js";
-
-  const client = createPublicClient({
-    chain: base,
-    transport: http("https://base-mainnet.g.alchemy.com/v2/hpm3wjQJZ31MCYtCUfJen"),
-  });
-
-  async function obtenerBloque() {
-    try {
-      const block = await client.getBlock({
-        blockNumber: 123456n,  // Cambia el número de bloque si necesitas otro
-      });
-
-      console.log("Bloque obtenido:", block);
-    } catch (error) {
-      console.error("Error al obtener el bloque:", error);
-    }
-  }
-
-  obtenerBloque();
-
-  // Conectar MetaMask
-  if (typeof window.ethereum !== "undefined") {
-    console.log("MetaMask está instalado!");
-  } else {
-    alert("Por favor, instala MetaMask para interactuar con esta página.");
-  }
-
-  // Obtener la dirección y saldo de MetaMask
-  const connectButton = document.createElement("button");
-  connectButton.innerHTML = "Conectar con MetaMask";
-  connectButton.style.position = "absolute";
-  connectButton.style.top = "20px";
-  connectButton.style.left = "20px";
-  document.body.appendChild(connectButton);
-
-  connectButton.addEventListener("click", async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        // Solicitar acceso a las cuentas de MetaMask
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    <!-- Integración con Alchemy y Viem -->
+    <script type="module">
+      if (typeof window.ethereum !== 'undefined') {
+        console.log('MetaMask está instalado!');
         
-        const account = accounts[0];
-        alert("Cuenta conectada: " + account);
+        const connectButton = document.getElementById('connectButton');
+        const accountInfo = document.getElementById('accountInfo');
         
-        // Crear una instancia de Ethers.js
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        
-        // Obtener el saldo de la cuenta
-        const balance = await provider.getBalance(account);
-        const balanceInEth = ethers.utils.formatEther(balance);
-        alert("Saldo: " + balanceInEth + " ETH");
-      } catch (error) {
-        console.error("Error al conectar con MetaMask", error);
+        connectButton.addEventListener('click', async () => {
+          try {
+            // Solicita las cuentas de MetaMask
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+
+            // Muestra la primera cuenta conectada
+            accountInfo.innerHTML = `Conectado con la cuenta: ${accounts[0]}`;
+            console.log('Cuenta conectada:', accounts[0]);
+          } catch (error) {
+            console.error('No se pudo conectar con MetaMask:', error);
+            accountInfo.innerHTML = 'Error al conectar con MetaMask';
+          }
+        });
+      } else {
+        console.log('MetaMask no está instalado');
+        document.getElementById('accountInfo').innerHTML = 'Por favor, instala MetaMask.';
       }
-    } else {
-      alert("MetaMask no está instalado.");
-    }
-  });
-</script>
+    </script>
+  </div>
 
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
