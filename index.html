@@ -30,7 +30,7 @@ layout: default
         </p>
       </div>
       <div class="card-footer">
-        <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
+        <a href="#contact" class="btn btn-primary">Solicitar presupuesto</a> <!-- CORREGIDO -->
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ layout: default
         </p>
       </div>
       <div class="card-footer">
-        <a href="#contacto" class="btn btn-primary">Ver más</a>
+        <a href="#contact" class="btn btn-primary">Ver más</a> <!-- CORREGIDO -->
       </div>
     </div>
   </div>
@@ -60,17 +60,44 @@ layout: default
         </p>
       </div>
       <div class="card-footer">
-        <a href="#contacto" class="btn btn-primary">Solicitar información</a>
+        <a href="#contact" class="btn btn-primary">Solicitar información</a> <!-- CORREGIDO -->
       </div>
     </div>
   </div>
 </div>
 <!-- /.row -->
 
-<!-- Sección de contacto (opcional) -->
-<div id="contacto" class="my-5 text-center">
+<!-- Sección de contacto -->
+<div id="contact" class="my-5 text-center">
   <h2>¿Necesitas un presupuesto?</h2>
   <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-  <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
+  <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
 </div>
+
+<!-- Integración con Alchemy y Viem -->
+<script type="module">
+  import { createPublicClient, http } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem.min.js";
+  import { base } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem/chains.js";
+
+  const client = createPublicClient({
+    chain: base,
+    transport: http("https://base-mainnet.g.alchemy.com/v2/hpm3wjQJZ31MCYtCUfJen"),
+  });
+
+  async function obtenerBloque() {
+    try {
+      const block = await client.getBlock({
+        blockNumber: 123456n,  // Cambia el número de bloque si necesitas otro
+      });
+
+      console.log("Bloque obtenido:", block);
+    } catch (error) {
+      console.error("Error al obtener el bloque:", error);
+    }
+  }
+
+  obtenerBloque();
+</script>
+</body>
+</html>
 
