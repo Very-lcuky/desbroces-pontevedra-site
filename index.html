@@ -5,26 +5,10 @@ layout: default
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Desbroces Pontevedra</title>
-  <link rel="stylesheet" href="/assets/css/styles.css"> <!-- Asegúrate de que esta ruta sea correcta -->
-  <style>
-    /* Estilo para el botón MetaMask */
-    .btn-metapago {
-      background-color: #28a745; /* verde */
-      color: white;
-      border: none;
-      border-radius: 4px;
-      display: none; /* Inicialmente oculto */
-    }
-
-    .btn-metapago:hover {
-      background-color: #218838;
-    }
-
-    /* Otros estilos */
-  </style>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 <body>
 
@@ -51,17 +35,19 @@ layout: default
     <div class="row" id="servicios">
       <div class="col-md-4 mb-5">
         <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/desbroce.jpg" alt="Desbroce de fincas">
+          <img class="card-img-top" src="/assets/img/desbroce.jpg" alt="Desbroce de fincas" />
           <div class="card-body">
             <h4 class="card-title">Desbroce de fincas</h4>
-            <p class="card-text">Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.</p>
+            <p class="card-text">
+              Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.
+            </p>
           </div>
           <div class="card-footer">
             <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
           </div>
         </div>
       </div>
-      <!-- Aquí agregar los otros servicios -->
+      <!-- Otros servicios aquí -->
     </div>
 
     <!-- Sección de contacto -->
@@ -69,56 +55,8 @@ layout: default
       <h2>¿Necesitas un presupuesto?</h2>
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
       <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
-
-      <!-- Botón para activar la opción de pagos -->
-      <br><br>
-      <button id="activarMetaMask" class="btn btn-primary btn-lg">Activar pagos</button>
-
-      <!-- Botón MetaMask, inicialmente oculto -->
-      <button id="connectMetaMask" class="btn-metapago btn-lg">
-        Conectar MetaMask para Pagar
-      </button>
-
-      <p id="metaMaskStatus" style="margin-top: 10px;"></p>
     </div>
-
   </div>
-
-  <!-- Scripts JS -->
-  <script>
-    // Mostrar el botón MetaMask cuando se hace clic en "Activar pagos"
-    document.getElementById('activarMetaMask').addEventListener('click', () => {
-      document.getElementById('connectMetaMask').style.display = 'inline-block'; // Muestra el botón MetaMask
-    });
-
-    // Conecta MetaMask y permite realizar un pago
-    document.getElementById('connectMetaMask').addEventListener('click', async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          // Solicita la cuenta MetaMask
-          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-          document.getElementById('metaMaskStatus').innerHTML = `Cuenta conectada: ${accounts[0]}`;
-
-          // Realizar un pago simple (0.01 ETH) a la dirección que especifiques
-          const to = 'DIRECCIÓN_DE_TU_COBRO';  // Reemplaza con la dirección a la que recibirás el pago
-          const value = (0.01 * 1e18).toString(16); // 0.01 ETH en Wei, formato hexadecimal
-
-          const txHash = await ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [{ to, value: `0x${value}` }]
-          });
-
-          document.getElementById('metaMaskStatus').innerHTML = `Pago enviado, txHash: ${txHash}`;
-        } catch (error) {
-          document.getElementById('metaMaskStatus').innerHTML = 'Error al conectar MetaMask o realizar el pago';
-          console.error(error);
-        }
-      } else {
-        document.getElementById('metaMaskStatus').innerHTML = 'Por favor, instala MetaMask para realizar pagos.';
-        window.open('https://metamask.io/download/', '_blank');
-      }
-    });
-  </script>
 
 </body>
 </html>
