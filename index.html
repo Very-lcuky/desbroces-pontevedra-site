@@ -10,6 +10,20 @@ layout: default
   <title>Desbroces Pontevedra</title>
   <link rel="stylesheet" href="/assets/css/styles.css"> <!-- Asegúrate de que esta ruta sea correcta -->
   <!-- Puedes incluir más CSS aquí si es necesario -->
+  <style>
+    /* Estilo para el botón MetaMask */
+    .btn-metapago {
+      background-color: #28a745; /* verde */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      display: none; /* Inicialmente oculto */
+    }
+
+    .btn-metapago:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
 
@@ -81,51 +95,52 @@ layout: default
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
       <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
 
-      <!-- Botón para conectar MetaMask -->
+      <!-- Botón para mostrar el botón MetaMask -->
       <br><br>
-      <button id="connectMetaMask" class="btn btn-warning btn-lg">Conectar MetaMask</button>
+      <button id="pagarBtn" class="btn btn-primary btn-lg">Quiero pagar</button>
+
+      <!-- Botón MetaMask, inicialmente oculto -->
+      <button id="connectMetaMask" class="btn-metapago btn-lg">
+        Conectar MetaMask
+      </button>
+
       <p id="metaMaskStatus" style="margin-top: 10px;"></p>
     </div>
 
   </div>
 
   <!-- Scripts JS -->
-  <script type="module">
-    import { createPublicClient, http } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem.min.js";
-    import { base } from "https://cdn.jsdelivr.net/npm/viem@latest/dist/viem/chains.js";
-
-    const client = createPublicClient({
-      chain: base,
-      transport: http("https://base-mainnet.g.alchemy.com/v2/hpm3wjQJZ31MCYtCUfJen"),
+  <script>
+    // Muestra el botón de MetaMask cuando el usuario hace clic en "Quiero pagar"
+    document.getElementById('pagarBtn').addEventListener('click', () => {
+      document.getElementById('connectMetaMask').style.display = 'inline-block';
     });
 
-    async function obtenerBloque() {
-      try {
-        const block = await client.getBlock({
-          blockNumber: 123456n, // Cambia este número si lo necesitas
-        });
-        console.log("Bloque obtenido:", block);
-      } catch (error) {
-        console.error("Error al obtener el bloque:", error);
-      }
-    }
-
-    obtenerBloque();
-  </script>
-
-  <!-- Conexión a MetaMask -->
-  <script>
+    // Conecta MetaMask y permite hacer un pago
     document.getElementById('connectMetaMask').addEventListener('click', async () => {
       if (typeof window.ethereum !== 'undefined') {
         try {
+          // Solicita la cuenta MetaMask
           const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-          document.getElementById('metaMaskStatus').innerHTML = `Conectado con la cuenta: ${accounts[0]}`;
+          document.getElementById('metaMaskStatus').innerHTML = `Cuenta conectada: ${accounts[0]}`;
+
+          // Realizar un pago simple (0.01 ETH) a la dirección que especifiques
+          const to = 'DIRECCIÓN_DE_TU_COBRO';  // Reemplaza con la dirección a la que recibirás el pago
+          const value = (0.01 * 1e18).toString(16); // 0.01 ETH en Wei, formato hexadecimal
+
+          const txHash = await ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [{ to, value: `0x${value}` }]
+          });
+
+          document.getElementById('metaMaskStatus').innerHTML = `Pago enviado, txHash: ${txHash}`;
         } catch (error) {
-          document.getElementById('metaMaskStatus').innerHTML = 'Error al conectar MetaMask';
-          console.error('Error al conectar MetaMask:', error);
+          document.getElementById('metaMaskStatus').innerHTML = 'Error al conectar MetaMask o realizar el pago';
+          console.error(error);
         }
       } else {
-        document.getElementById('metaMaskStatus').innerHTML = 'Por favor, instala MetaMask.';
+        document.getElementById('metaMaskStatus').innerHTML = 'Por favor, instala MetaMask para realizar pagos.';
+        window.open('https://metamask.io/download/', '_blank');
       }
     });
   </script>
