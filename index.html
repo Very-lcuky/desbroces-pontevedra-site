@@ -77,6 +77,11 @@ layout: default
   <br><br>
   <button id="connectMetaMask" class="btn btn-warning btn-lg">Conectar MetaMask</button>
   <p id="metaMaskStatus" style="margin-top: 10px;"></p>
+
+  <!-- Botón de pago (inicialmente oculto) -->
+  <br><br>
+  <button id="payButton" class="btn btn-success btn-lg" style="display:none;">Pagar Presupuesto</button>
+  <p id="paymentStatus" style="margin-top: 10px;"></p>
 </div>
 
 <!-- Integración con Alchemy y Viem -->
@@ -104,19 +109,54 @@ layout: default
   obtenerBloque();
 </script>
 
-<!-- Conexión a MetaMask -->
+<!-- Conexión a MetaMask y pago -->
 <script>
   document.getElementById('connectMetaMask').addEventListener('click', async () => {
     if (typeof window.ethereum !== 'undefined') {
       try {
+        // Solicitar cuentas al usuario
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         document.getElementById('metaMaskStatus').innerHTML = `Conectado con la cuenta: ${accounts[0]}`;
+
+        // Mostrar el botón de pago
+        document.getElementById('payButton').style.display = 'inline-block';
+
       } catch (error) {
         document.getElementById('metaMaskStatus').innerHTML = 'Error al conectar MetaMask';
         console.error('Error al conectar MetaMask:', error);
       }
     } else {
       document.getElementById('metaMaskStatus').innerHTML = 'Por favor, instala MetaMask.';
+    }
+  });
+
+  // Evento para el botón de pago
+  document.getElementById('payButton').addEventListener('click', async () => {
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    const account = accounts[0];
+
+    // Definir la cantidad a pagar (por ejemplo, 0.05 ETH)
+    const amountInEther = '0.05';  // Modificar según el presupuesto
+
+    try {
+      // Realizar la transacción
+      const tx = await ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            from: account,
+            to: '0x692018bED36405fD85d9f9531A146cA3b0aE45a0',  // Dirección de recepción
+            value: ethereum.utils.toHex(ethereum.utils.parseEther(amountInEther)),
+          },
+        ],
+      });
+
+      // Mostrar estado de pago
+      document.getElementById('paymentStatus').innerHTML = `Pago exitoso. TX Hash: ${tx}`;
+
+    } catch (error) {
+      document.getElementById('paymentStatus').innerHTML = 'Error en el pago.';
+      console.error('Error en el pago:', error);
     }
   });
 </script>
