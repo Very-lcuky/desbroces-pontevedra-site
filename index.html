@@ -70,13 +70,13 @@ layout: default
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
       <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
 
-      <!-- Botón para activar MetaMask -->
+      <!-- Botón para activar la opción de pagos -->
       <br><br>
-      <button id="activarMetaMask" class="btn btn-primary btn-lg">Activar MetaMask</button>
+      <button id="activarMetaMask" class="btn btn-primary btn-lg">Activar pagos</button>
 
       <!-- Botón MetaMask, inicialmente oculto -->
       <button id="connectMetaMask" class="btn-metapago btn-lg">
-        Conectar MetaMask
+        Conectar MetaMask para Pagar
       </button>
 
       <p id="metaMaskStatus" style="margin-top: 10px;"></p>
@@ -86,9 +86,9 @@ layout: default
 
   <!-- Scripts JS -->
   <script>
-    // Mostrar el botón MetaMask cuando se hace clic en "Activar MetaMask"
+    // Mostrar el botón MetaMask cuando se hace clic en "Activar pagos"
     document.getElementById('activarMetaMask').addEventListener('click', () => {
-      document.getElementById('connectMetaMask').style.display = 'inline-block';
+      document.getElementById('connectMetaMask').style.display = 'inline-block'; // Muestra el botón MetaMask
     });
 
     // Conecta MetaMask y permite realizar un pago
