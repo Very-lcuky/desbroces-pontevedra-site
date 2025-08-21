@@ -9,7 +9,6 @@ layout: default
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desbroces Pontevedra</title>
   <link rel="stylesheet" href="/assets/css/styles.css"> <!-- Asegúrate de que esta ruta sea correcta -->
-  <!-- Puedes incluir más CSS aquí si es necesario -->
   <style>
     /* Estilo para el botón MetaMask */
     .btn-metapago {
@@ -23,6 +22,8 @@ layout: default
     .btn-metapago:hover {
       background-color: #218838;
     }
+
+    /* Otros estilos */
   </style>
 </head>
 <body>
@@ -42,7 +43,6 @@ layout: default
         </p>
         <a class="btn btn-primary btn-lg" href="#servicios">Ver Servicios &raquo;</a>
       </div>
-
       <!-- Incluyendo el sidebar.html (si usas Jekyll y tienes este archivo) -->
       {% include sidebar.html %}
     </div>
@@ -61,32 +61,7 @@ layout: default
           </div>
         </div>
       </div>
-
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/poda.jpg" alt="Poda de árboles">
-          <div class="card-body">
-            <h4 class="card-title">Poda de árboles</h4>
-            <p class="card-text">Realizamos podas estéticas y de mantenimiento para árboles, setos y zonas verdes.</p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Ver más</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/maquinaria.jpg" alt="Maquinaria profesional">
-          <div class="card-body">
-            <h4 class="card-title">Maquinaria profesional</h4>
-            <p class="card-text">Trabajamos con desbrozadoras, tractores y herramientas modernas para ofrecer eficiencia y seguridad.</p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar información</a>
-          </div>
-        </div>
-      </div>
+      <!-- Aquí agregar los otros servicios -->
     </div>
 
     <!-- Sección de contacto -->
@@ -95,9 +70,9 @@ layout: default
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
       <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
 
-      <!-- Botón para mostrar el botón MetaMask -->
+      <!-- Botón para activar MetaMask -->
       <br><br>
-      <button id="pagarBtn" class="btn btn-primary btn-lg">Quiero pagar</button>
+      <button id="activarMetaMask" class="btn btn-primary btn-lg">Activar MetaMask</button>
 
       <!-- Botón MetaMask, inicialmente oculto -->
       <button id="connectMetaMask" class="btn-metapago btn-lg">
@@ -111,12 +86,12 @@ layout: default
 
   <!-- Scripts JS -->
   <script>
-    // Muestra el botón de MetaMask cuando el usuario hace clic en "Quiero pagar"
-    document.getElementById('pagarBtn').addEventListener('click', () => {
+    // Mostrar el botón MetaMask cuando se hace clic en "Activar MetaMask"
+    document.getElementById('activarMetaMask').addEventListener('click', () => {
       document.getElementById('connectMetaMask').style.display = 'inline-block';
     });
 
-    // Conecta MetaMask y permite hacer un pago
+    // Conecta MetaMask y permite realizar un pago
     document.getElementById('connectMetaMask').addEventListener('click', async () => {
       if (typeof window.ethereum !== 'undefined') {
         try {
