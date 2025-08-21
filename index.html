@@ -2,7 +2,7 @@
 <div id="contacto" class="my-5 text-center">
   <h2>¿Necesitas un presupuesto?</h2>
   <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-  <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
+  <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
 
   <!-- Botón para conectar MetaMask, inicialmente oculto -->
   <br><br>
@@ -19,8 +19,10 @@
 <script>
   // Verificar si MetaMask está instalado
   if (typeof window.ethereum !== 'undefined') {
-    // Si MetaMask está disponible, mostramos el botón de conectar
+    // Si MetaMask está disponible, mostramos el botón de conectar y lo ponemos en verde
     document.getElementById('connectMetaMask').style.display = 'inline-block';
+    document.getElementById('connectMetaMask').classList.remove('btn-warning');
+    document.getElementById('connectMetaMask').classList.add('btn-success');
   } else {
     // Si no está disponible, mostramos un mensaje al usuario
     document.getElementById('metaMaskStatus').innerHTML = 'MetaMask no está instalado en tu navegador.';
