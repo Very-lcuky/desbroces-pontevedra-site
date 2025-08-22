@@ -1,7 +1,3 @@
----
-layout: default
----
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,10 +41,14 @@ layout: default
     <div id="metamask-connect" class="text-center">
       <h2>Conecta tu MetaMask</h2>
       <button id="connectBtn" class="btn btn-primary">Conectar con MetaMask</button>
-      <p id="account">No conectado</p>
-      <p id="balance">Balance: 0 ETH</p>
-      <input type="number" id="amount" placeholder="Cantidad a enviar (ETH)" min="0.01" />
-      <button id="sendBtn" class="btn btn-success">Enviar Pago</button>
+      
+      <!-- Mostrar cuenta y opción de enviar pago después de conectar MetaMask -->
+      <div id="metamask-info" style="display: none;">
+        <p id="account">No conectado</p>
+        <p id="balance">Balance: 0 ETH</p>
+        <input type="number" id="amount" placeholder="Cantidad a enviar (ETH)" min="0.01" disabled />
+        <button id="sendBtn" class="btn btn-success" disabled>Enviar Pago</button>
+      </div>
     </div>
   </div>
 
@@ -69,6 +69,7 @@ layout: default
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         selectedAccount = accounts[0];
         document.getElementById("account").innerText = `Cuenta conectada: ${selectedAccount}`;
+        document.getElementById("metamask-info").style.display = 'block'; // Mostrar información de MetaMask
         getBalance(selectedAccount);
       } catch (error) {
         console.error("Error al conectar:", error);
@@ -84,6 +85,8 @@ layout: default
       });
       const ether = parseFloat(window.web3.utils.fromWei(balance, 'ether')).toFixed(4);
       document.getElementById("balance").innerText = `Balance: ${ether} ETH`;
+      document.getElementById("amount").disabled = false; // Habilitar el campo para ingresar cantidad
+      document.getElementById("sendBtn").disabled = false; // Habilitar el botón para enviar
     }
 
     // Enviar pago
