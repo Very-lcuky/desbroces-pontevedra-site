@@ -86,11 +86,85 @@ layout: default
     <div id="contacto" class="my-5 text-center">
       <h2>¿Necesitas un presupuesto?</h2>
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-      <a href="mailto:tu-email@dominio.com" class="btn btn-success btn-lg">Enviar correo</a>
+      <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
+    </div>
+
+    <!-- Sección MetaMask -->
+    <div class="my-5 text-center">
+      <h2>Conecta tu MetaMask</h2>
+      <button id="connectBtn" class="btn btn-warning">Conectar con MetaMask</button>
+      <br><br>
+      <label for="amountInput">Introduce la cantidad de pago en ETH:</label>
+      <input type="number" id="amountInput" placeholder="Cantidad en ETH" step="0.01" min="0.01" required>
+      <br><br>
+      <button id="sendBtn" class="btn btn-success" style="display: none;">Enviar Pago</button>
     </div>
 
   </div>
 
+  <script>
+    let userAccount = null;
+    let provider = null;
+
+    // Conectar a MetaMask
+    document.getElementById("connectBtn").addEventListener("click", async () => {
+      if (window.ethereum) {
+        try {
+          // Solicitar la cuenta del usuario
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          userAccount = accounts[0];  // Guardar la cuenta conectada
+          console.log("Cuenta conectada:", userAccount);
+
+          // Mostrar botón de enviar pago
+          document.getElementById("sendBtn").style.display = 'block';
+        } catch (error) {
+          console.error("Error al conectar:", error);
+        }
+      } else {
+        alert("Por favor, instala MetaMask para usar esta aplicación.");
+      }
+    });
+
+    // Función para enviar pago
+    document.getElementById("sendBtn").addEventListener("click", async () => {
+      const amount = document.getElementById("amountInput").value;  // Obtener la cantidad de ETH ingresada
+
+      if (!userAccount) {
+        alert("Conéctate primero con MetaMask.");
+        return;
+      }
+
+      if (!amount || parseFloat(amount) <= 0) {
+        alert("Por favor, ingresa una cantidad válida.");
+        return;
+      }
+
+      try {
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        // Dirección de recepción
+        const recipientAddress = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";  
+
+        // Convertir la cantidad de ETH a Wei
+        const amountInWei = ethers.utils.parseEther(amount.toString());
+
+        // Enviar transacción
+        const tx = await signer.sendTransaction({
+          to: recipientAddress,
+          value: amountInWei
+        });
+
+        console.log("Transacción enviada:", tx);
+        alert("Pago realizado exitosamente.");
+      } catch (error) {
+        console.error("Error al enviar el pago:", error);
+        alert("Error al realizar el pago.");
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
 </body>
 </html>
 
