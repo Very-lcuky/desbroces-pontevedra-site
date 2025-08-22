@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desbroces Pontevedra</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script type="module" crossorigin src="/site/assets/index-DS14Sv5t.js"></script>
+  <link rel="stylesheet" crossorigin href="/site/assets/index-D8b4DHJx.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Sección principal: ¿Quiénes somos? -->
+    <div class="row">
+      <div class="col-md-8 mb-5">
+        <h2>¿Quiénes somos?</h2>
+        <hr />
+        <p>
+          En <strong>Desbroces Pontevedra</strong> nos especializamos en la limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. 
+          Ofrecemos soluciones rápidas, eficaces y seguras tanto a particulares como a empresas.
+        </p>
+        <p>
+          Contamos con maquinaria profesional y un equipo cualificado que garantiza resultados óptimos, ya sea para preparar un terreno, conservarlo o ponerlo a la venta.
+        </p>
+        <a class="btn btn-primary btn-lg" href="#servicios">Ver Servicios &raquo;</a>
+      </div>
+      <!-- Incluyendo el sidebar.html (si usas Jekyll y tienes este archivo) -->
+      <!-- {% include sidebar.html %} -->
+    </div>
+
+    <!-- Sección de Servicios -->
+    <div class="row" id="servicios">
+      <div class="col-md-4 mb-5">
+        <div class="card border-0 shadow h-100">
+          <img class="card-img-top" src="/assets/img/desbroce.jpg" alt="Desbroce de fincas" />
+          <div class="card-body">
+            <h4 class="card-title">Desbroce de fincas</h4>
+            <p class="card-text">
+              Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.
+            </p>
+          </div>
+          <div class="card-footer">
+            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nuevo servicio: Mantenimiento de jardines -->
+      <div class="col-md-4 mb-5">
+        <div class="card border-0 shadow h-100">
+          <img class="card-img-top" src="/assets/img/jardines.jpg" alt="Mantenimiento de jardines" />
+          <div class="card-body">
+            <h4 class="card-title">Mantenimiento de jardines</h4>
+            <p class="card-text">
+              Realizamos mantenimiento integral de jardines, podas, riego y diseño para crear espacios verdes impecables.
+            </p>
+          </div>
+          <div class="card-footer">
+            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nuevo servicio: Limpieza de montes -->
+      <div class="col-md-4 mb-5">
+        <div class="card border-0 shadow h-100">
+          <img class="card-img-top" src="/assets/img/montes.jpg" alt="Limpieza de montes" />
+          <div class="card-body">
+            <h4 class="card-title">Limpieza de montes</h4>
+            <p class="card-text">
+              Realizamos la limpieza de montes para prevenir incendios y mejorar la salud de los ecosistemas.
+            </p>
+          </div>
+          <div class="card-footer">
+            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de contacto -->
+    <div id="contacto" class="my-5 text-center">
+      <h2>¿Necesitas un presupuesto?</h2>
+      <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
+      <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
+    </div>
+
+    <!-- Sección de Conexión con MetaMask -->
+    <div id="metamask-connect" class="text-center my-5">
+      <h2>Conecta tu MetaMask</h2>
+      <p>Conéctate con MetaMask para recibir información sobre nuestros servicios y pagos.</p>
+      <button id="connect-button" class="btn btn-primary">Conectar con MetaMask</button>
+      <p id="status"></p>
+    </div>
+
+  </div>
+
+  <!-- Incluir el archivo de script de React -->
+
+  <!-- Aquí iría el código de integración de MetaMask -->
+  <script>
+    // Esta es la lógica para conectar MetaMask cuando el usuario haga clic en el botón
+    document.getElementById('connect-button').addEventListener('click', async () => {
+      if (window.ethereum) {
+        try {
+          // Solicitar la conexión a MetaMask
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          document.getElementById('status').innerText = 'Conectado con MetaMask';
+        } catch (error) {
+          document.getElementById('status').innerText = 'Error al conectar con MetaMask';
+        }
+      } else {
+        document.getElementById('status').innerText = 'MetaMask no está instalado';
+      }
+    });
+  </script>
+
+</body>
+</html>
+
