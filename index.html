@@ -37,18 +37,18 @@
       <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
     </div>
 
-    <!-- Conectar con MetaMask -->
-    <div id="metamask-connect" class="text-center">
-      <h2>Conecta tu MetaMask</h2>
-      <button id="connectBtn" class="btn btn-primary">Conectar con MetaMask</button>
-      
-      <!-- Mostrar cuenta y opción de enviar pago después de conectar MetaMask -->
-      <div id="metamask-info" style="display: none;">
-        <p id="account">No conectado</p>
-        <p id="balance">Balance: 0 ETH</p>
-        <input type="number" id="amount" placeholder="Cantidad a enviar (ETH)" min="0.01" disabled />
-        <button id="sendBtn" class="btn btn-success" disabled>Enviar Pago</button>
-      </div>
+    <!-- Solicitar pago -->
+    <div id="payment-section" class="text-center" style="display: none;">
+      <h2>Realizar un pago</h2>
+      <p id="account">No conectado</p>
+      <p id="balance">Balance: 0 ETH</p>
+      <input type="number" id="amount" placeholder="Cantidad a enviar (ETH)" min="0.01" disabled />
+      <button id="sendBtn" class="btn btn-success" disabled>Enviar Pago</button>
+    </div>
+
+    <!-- Botón que activa la conexión a MetaMask -->
+    <div id="payment-button" class="text-center">
+      <button id="startPaymentBtn" class="btn btn-primary">Solicitar Pago</button>
     </div>
   </div>
 
@@ -62,20 +62,25 @@
 
     let selectedAccount;
 
+    // Activar sección de pago cuando el usuario hace clic en "Solicitar Pago"
+    document.getElementById("startPaymentBtn").addEventListener("click", async () => {
+      document.getElementById("payment-section").style.display = 'block'; // Mostrar la sección de MetaMask
+      await connectMetaMask(); // Intentar conectar MetaMask
+    });
+
     // Conectar a MetaMask
-    document.getElementById("connectBtn").addEventListener("click", async () => {
+    async function connectMetaMask() {
       try {
         // Solicitar conexión a MetaMask
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         selectedAccount = accounts[0];
         document.getElementById("account").innerText = `Cuenta conectada: ${selectedAccount}`;
-        document.getElementById("metamask-info").style.display = 'block'; // Mostrar información de MetaMask
         getBalance(selectedAccount);
       } catch (error) {
         console.error("Error al conectar:", error);
         alert("Error al conectar MetaMask. Asegúrate de que MetaMask está instalado.");
       }
-    });
+    }
 
     // Obtener balance de ETH
     async function getBalance(account) {
