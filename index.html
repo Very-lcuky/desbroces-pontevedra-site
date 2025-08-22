@@ -10,7 +10,6 @@ layout: default
   <title>Desbroces Pontevedra</title>
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <style>
-    /* Mantén los estilos de la página */
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -54,7 +53,7 @@ layout: default
       background-color: #28a745;
     }
 
-    /* Ajustes para el estado de MetaMask */
+    /* Ocultar el estado de MetaMask hasta que el usuario se conecte */
     #metamask-status {
       display: none;
       padding: 20px;
@@ -63,9 +62,9 @@ layout: default
       border-radius: 5px;
     }
 
-    /* Eliminar el fondo */
-    #metamask-status {
-      background-color: transparent;
+    /* Ajustes generales para el diseño */
+    .metamask-message {
+      font-weight: bold;
     }
   </style>
 </head>
@@ -164,6 +163,7 @@ layout: default
           const account = accounts[0];
           document.getElementById("metamask-message").innerText = `Conectado: ${account}`;
           updateBalance(account);
+          document.getElementById("metamask-status").style.display = 'block'; // Mostrar el estado de MetaMask
         } catch (error) {
           document.getElementById("metamask-message").innerText = "Error al conectar.";
           console.error(error);
@@ -181,7 +181,6 @@ layout: default
       const balanceInEth = window.web3.utils.fromWei(balance, 'ether');
       document.getElementById("balance").innerText = `${balanceInEth} ETH`;
       document.getElementById("payButton").style.display = 'inline-block'; // Mostrar el botón de pago
-      document.getElementById("metamask-status").style.display = 'block'; // Mostrar el estado de MetaMask
     }
 
     async function makePayment() {
