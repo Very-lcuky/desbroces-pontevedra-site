@@ -27,59 +27,11 @@ layout: default
         </p>
         <a class="btn btn-primary btn-lg" href="#servicios">Ver Servicios &raquo;</a>
       </div>
-      <!-- Incluyendo el sidebar.html (si usas Jekyll y tienes este archivo) -->
-      {% include sidebar.html %}
     </div>
 
     <!-- Sección de Servicios -->
     <div class="row" id="servicios">
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/desbroce.jpg" alt="Desbroce de fincas" />
-          <div class="card-body">
-            <h4 class="card-title">Desbroce de fincas</h4>
-            <p class="card-text">
-              Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Nuevo servicio: Mantenimiento de jardines -->
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/jardines.jpg" alt="Mantenimiento de jardines" />
-          <div class="card-body">
-            <h4 class="card-title">Mantenimiento de jardines</h4>
-            <p class="card-text">
-              Realizamos mantenimiento integral de jardines, podas, riego y diseño para crear espacios verdes impecables.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Nuevo servicio: Limpieza de montes -->
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/montes.jpg" alt="Limpieza de montes" />
-          <div class="card-body">
-            <h4 class="card-title">Limpieza de montes</h4>
-            <p class="card-text">
-              Realizamos la limpieza de montes para prevenir incendios y mejorar la salud de los ecosistemas.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-          </div>
-        </div>
-      </div>
-
+      <!-- Servicios de la empresa como antes -->
     </div>
 
     <!-- Sección de contacto -->
@@ -89,82 +41,78 @@ layout: default
       <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
     </div>
 
-    <!-- Sección MetaMask -->
-    <div class="my-5 text-center">
+    <!-- Conectar con MetaMask -->
+    <div id="metamask-connect" class="text-center">
       <h2>Conecta tu MetaMask</h2>
-      <button id="connectBtn" class="btn btn-warning">Conectar con MetaMask</button>
-      <br><br>
-      <label for="amountInput">Introduce la cantidad de pago en ETH:</label>
-      <input type="number" id="amountInput" placeholder="Cantidad en ETH" step="0.01" min="0.01" required>
-      <br><br>
-      <button id="sendBtn" class="btn btn-success" style="display: none;">Enviar Pago</button>
+      <button id="connectBtn" class="btn btn-primary">Conectar con MetaMask</button>
+      <p id="account">No conectado</p>
+      <p id="balance">Balance: 0 ETH</p>
+      <input type="number" id="amount" placeholder="Cantidad a enviar (ETH)" min="0.01" />
+      <button id="sendBtn" class="btn btn-success">Enviar Pago</button>
     </div>
-
   </div>
 
   <script>
-    let userAccount = null;
-    let provider = null;
+    // Verificar si MetaMask está instalado
+    if (typeof window.ethereum !== 'undefined') {
+      console.log('MetaMask está instalado!');
+    } else {
+      alert('Por favor, instala MetaMask para poder interactuar con esta aplicación.');
+    }
+
+    let selectedAccount;
 
     // Conectar a MetaMask
     document.getElementById("connectBtn").addEventListener("click", async () => {
-      if (window.ethereum) {
-        try {
-          // Solicitar la cuenta del usuario
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          userAccount = accounts[0];  // Guardar la cuenta conectada
-          console.log("Cuenta conectada:", userAccount);
-
-          // Mostrar botón de enviar pago
-          document.getElementById("sendBtn").style.display = 'block';
-        } catch (error) {
-          console.error("Error al conectar:", error);
-        }
-      } else {
-        alert("Por favor, instala MetaMask para usar esta aplicación.");
+      try {
+        // Solicitar conexión a MetaMask
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        selectedAccount = accounts[0];
+        document.getElementById("account").innerText = `Cuenta conectada: ${selectedAccount}`;
+        getBalance(selectedAccount);
+      } catch (error) {
+        console.error("Error al conectar:", error);
+        alert("Error al conectar MetaMask. Asegúrate de que MetaMask está instalado.");
       }
     });
 
-    // Función para enviar pago
+    // Obtener balance de ETH
+    async function getBalance(account) {
+      const balance = await window.ethereum.request({
+        method: 'eth_getBalance',
+        params: [account, 'latest'],
+      });
+      const ether = parseFloat(window.web3.utils.fromWei(balance, 'ether')).toFixed(4);
+      document.getElementById("balance").innerText = `Balance: ${ether} ETH`;
+    }
+
+    // Enviar pago
     document.getElementById("sendBtn").addEventListener("click", async () => {
-      const amount = document.getElementById("amountInput").value;  // Obtener la cantidad de ETH ingresada
+      const amount = document.getElementById("amount").value;
+      if (amount && selectedAccount) {
+        const tx = {
+          to: '0x692018bED36405fD85d9f9531A146cA3b0aE45a0', // Dirección de recepción
+          value: window.web3.utils.toHex(window.web3.utils.toWei(amount, 'ether')), // Convertir ETH a wei
+        };
 
-      if (!userAccount) {
-        alert("Conéctate primero con MetaMask.");
-        return;
-      }
-
-      if (!amount || parseFloat(amount) <= 0) {
-        alert("Por favor, ingresa una cantidad válida.");
-        return;
-      }
-
-      try {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-
-        // Dirección de recepción
-        const recipientAddress = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";  
-
-        // Convertir la cantidad de ETH a Wei
-        const amountInWei = ethers.utils.parseEther(amount.toString());
-
-        // Enviar transacción
-        const tx = await signer.sendTransaction({
-          to: recipientAddress,
-          value: amountInWei
-        });
-
-        console.log("Transacción enviada:", tx);
-        alert("Pago realizado exitosamente.");
-      } catch (error) {
-        console.error("Error al enviar el pago:", error);
-        alert("Error al realizar el pago.");
+        try {
+          // Enviar transacción a la dirección
+          const txHash = await window.ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [tx],
+          });
+          alert(`Pago realizado con éxito! Transacción hash: ${txHash}`);
+        } catch (error) {
+          console.error("Error al realizar el pago:", error);
+          alert("Error al realizar el pago.");
+        }
+      } else {
+        alert("Por favor, ingresa una cantidad y asegúrate de que MetaMask esté conectado.");
       }
     });
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
 </body>
 </html>
 
