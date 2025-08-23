@@ -22,19 +22,19 @@ _site/
 *.tar
 docker-compose.override.yml
 
-# Logs
-*.log
-
 # Kubernetes / GKE
 .kube/
 *.kubeconfig
-*.kube/
 
-# Otros
+# Google Cloud SDK (no subir al repo)
+google-cloud-sdk/
+google-cloud-cli-*.tar.gz
+
+# Logs
+*.log
+
+# Editor / IDE
 .idea/
 .vscode/
 *.iml
-
-
-
 
