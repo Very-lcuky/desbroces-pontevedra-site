@@ -1,10 +1,9 @@
-title: Business Frontpage
-description: A business home page starter template for Bootstrap 4 featuring marketing boxes and a full width image header.
+title: Desbroce de Fincas en Pontevedra | Poda y Limpieza de Montes
+description: Empresa especializada en desbroce de fincas, limpieza de montes, poda de árboles y mantenimiento de jardines. Servicio profesional en toda Pontevedra con maquinaria.
 
-# disabled because we are using a custom domain
-#baseurl: /business-frontpage 
+url: "https://desbroces-pontevedra.fun"  # ✅ Tu dominio real
 
-color-scheme: "mediumseagreen" # the scheme can be any HEX code like "#00aa55"
+color-scheme: "mediumseagreen"
 
 sass:
   sass_dir: /assets/css/_sass
@@ -15,3 +14,8 @@ include:
 
 exclude:
   - .sass-cache
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
