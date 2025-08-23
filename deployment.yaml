@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desbroces-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: desbroces
+  template:
+    metadata:
+      labels:
+        app: desbroces
+    spec:
+      containers:
+      - name: desbroces-container
+        image: europe-southwest1-docker.pkg.dev/useful-memory-464107-d6/docker-repo/desbroces-pontevedra:latest
+        ports:
+        - containerPort: 80

@@ -1,4 +1,40 @@
-_site/
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Node / Python / Ruby / Jekyll
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
+_site/
+
+# Docker
+*.tar
+docker-compose.override.yml
+
+# Logs
+*.log
+
+# Kubernetes / GKE
+.kube/
+*.kubeconfig
+*.kube/
+
+# Otros
+.idea/
+.vscode/
+*.iml
+
+
+
+
