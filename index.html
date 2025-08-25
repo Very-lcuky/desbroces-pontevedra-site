@@ -20,6 +20,7 @@ layout: default
     .btn-success { background-color: #28a745; }
     #web3Form { display: none; padding: 20px; margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; }
     .metamask-message { font-weight: bold; }
+    form input, form textarea { width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
@@ -38,10 +39,10 @@ layout: default
 
     <!-- Servicios -->
     <div class="row" id="servicios">
-      <!-- Aquí van tus tarjetas de servicios -->
+      <!-- Aquí van tus tarjetas de servicio -->
     </div>
 
-    <!-- Contacto Web3 -->
+    <!-- Contacto -->
     <div id="contacto" class="my-5 text-center">
       <h2>¿Necesitas un presupuesto?</h2>
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
@@ -60,8 +61,11 @@ layout: default
 
       <hr />
 
-      <!-- Formulario de contacto real con FormSubmit -->
-      <form action="https://formsubmit.co/desbrocespontevedra@mail.com" method="POST">
+      <!-- Formulario de contacto funcional con FormSubmit -->
+      <form action="https://formsubmit.co/TU_EMAIL_AQUI" method="POST">
+        <!-- Campo oculto para redireccionar después del envío -->
+        <input type="hidden" name="_next" value="https://desbroces-pontevedra.fun/gracias.html">
+        <input type="hidden" name="_captcha" value="false">
         <label for="name">Nombre:</label>
         <input type="text" name="name" required>
         <label for="email">Correo:</label>
@@ -70,7 +74,6 @@ layout: default
         <textarea name="message" required></textarea>
         <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
       </form>
-
     </div>
   </div>
 
@@ -83,7 +86,7 @@ layout: default
     const PAY_ADDRESS = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
 
     async function connectWallet() {
-      if(window.ethereum) {
+      if(window.ethereum){
         try {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
           const account = accounts[0];
@@ -92,11 +95,11 @@ layout: default
           document.getElementById("metamask-message").innerText = `Conectado: ${account}`;
           document.getElementById("web3Form").style.display = "block";
           updateBalance(account);
-        } catch(err) { alert("Error al conectar wallet."); console.error(err); }
+        } catch(err){ alert("Error al conectar wallet."); console.error(err); }
       } else { alert("Por favor instala MetaMask."); }
     }
 
-    async function updateBalance(account) {
+    async function updateBalance(account){
       const balance = await provider.getBalance(account);
       document.getElementById("balance").innerText = `${ethers.formatEther(balance)} MATIC`;
     }
@@ -114,13 +117,12 @@ layout: default
         });
         alert("Pago realizado. Ver en Polygonscan: https://polygonscan.com/tx/"+tx.hash);
         updateBalance(await signer.getAddress());
-      }catch(err){ alert("Error en pago"); console.error(err); }
+      } catch(err){ alert("Error en pago"); console.error(err); }
     }
 
     document.getElementById("connectWallet").addEventListener("click", connectWallet);
     document.getElementById("web3Form").addEventListener("submit", makePayment);
   </script>
-
 </body>
 </html>
 
