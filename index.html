@@ -5,227 +5,120 @@ layout: default
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Desbroces Pontevedra</title>
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .row {
-      margin-bottom: 20px;
-    }
-
-    .card {
-      border: 1px solid #ccc;
-      margin: 10px 0;
-      border-radius: 5px;
-    }
-
-    .card-img-top {
-      width: 100%;
-      border-radius: 5px 5px 0 0;
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      margin-top: 10px;
-      text-decoration: none;
-      color: white;
-      background-color: #007bff;
-      border-radius: 5px;
-    }
-
-    .btn-success {
-      background-color: #28a745;
-    }
-
-    /* Mantener el estilo de MetaMask */
-    #web3Form {
-      display: none;
-      padding: 20px;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .metamask-message {
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Desbroces Pontevedra</title>
+<link rel="stylesheet" href="/assets/css/styles.css" />
+<style>
+  body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .row { margin-bottom: 20px; }
+  .card { border: 1px solid #ccc; margin: 10px 0; border-radius: 5px; }
+  .card-img-top { width: 100%; border-radius: 5px 5px 0 0; }
+  .card-body { padding: 20px; }
+  .btn { padding: 10px 20px; margin-top: 10px; text-decoration: none; color: white; background-color: #007bff; border-radius: 5px; }
+  .btn-success { background-color: #28a745; }
+  #web3Form { display: none; padding: 20px; margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; }
+  .metamask-message { font-weight: bold; }
+</style>
 </head>
 <body>
+<div class="container">
 
-  <div class="container">
-    <!-- Sección principal -->
-    <div class="row">
-      <div class="col-md-8 mb-5">
-        <h2>¿Quiénes somos?</h2>
-        <hr />
-        <p>
-          En <strong>Desbroces Pontevedra</strong> nos especializamos en la limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. 
-          Ofrecemos soluciones rápidas, eficaces y seguras tanto a particulares como a empresas.
-        </p>
-        <p>
-          Contamos con maquinaria profesional y un equipo cualificado que garantiza resultados óptimos, ya sea para preparar un terreno, conservarlo o ponerlo a la venta.
-        </p>
-        <a class="btn btn-primary btn-lg" href="#servicios">Ver Servicios &raquo;</a>
-      </div>
-    </div>
-
-    <!-- Sección de Servicios -->
-    <div class="row" id="servicios">
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/desbroce.jpg" alt="Desbroce de fincas" />
-          <div class="card-body">
-            <h4 class="card-title">Desbroce de fincas</h4>
-            <p class="card-text">
-              Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/jardines.jpg" alt="Mantenimiento de jardines" />
-          <div class="card-body">
-            <h4 class="card-title">Mantenimiento de jardines</h4>
-            <p class="card-text">
-              Realizamos mantenimiento integral de jardines, podas, riego y diseño para crear espacios verdes impecables.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-5">
-        <div class="card border-0 shadow h-100">
-          <img class="card-img-top" src="/assets/img/montes.jpg" alt="Limpieza de montes" />
-          <div class="card-body">
-            <h4 class="card-title">Limpieza de montes</h4>
-            <p class="card-text">
-              Realizamos la limpieza de montes para prevenir incendios y mejorar la salud de los ecosistemas.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sección de contacto Web3 -->
-    <div id="contacto" class="my-5 text-center">
-      <h2>¿Necesitas un presupuesto?</h2>
-      <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-
-      <!-- Botón para conectar wallet -->
-      <button id="connectWallet" class="btn btn-success btn-lg">Conectar Wallet</button>
-
-      <!-- Formulario Web3 corregido -->
-      <form id="web3Form">
-        <p id="metamask-message"></p>
-        <p><strong>Balance:</strong> <span id="balance">0 MATIC</span></p>
-
-        <label for="paymentAmount">Cantidad a enviar (MATIC):</label>
-        <input type="number" id="paymentAmount" placeholder="Ej. 0.1" />
-
-        <label for="userMessage">Mensaje (opcional):</label>
-        <input type="text" id="userMessage" placeholder="Tu mensaje..." />
-
-        <button type="submit" class="btn btn-primary">Realizar Pago</button>
-      </form>
+  <!-- Quiénes somos -->
+  <div class="row">
+    <div class="col-md-8 mb-5">
+      <h2>¿Quiénes somos?</h2>
+      <hr />
+      <p>En <strong>Desbroces Pontevedra</strong> nos especializamos en la limpieza y mantenimiento de fincas, jardines y montes en toda la provincia. Ofrecemos soluciones rápidas, eficaces y seguras tanto a particulares como a empresas.</p>
+      <p>Contamos con maquinaria profesional y un equipo cualificado que garantiza resultados óptimos, ya sea para preparar un terreno, conservarlo o ponerlo a la venta.</p>
+      <a class="btn btn-primary btn-lg" href="#servicios">Ver Servicios &raquo;</a>
     </div>
   </div>
 
-  <!-- Script Web3 -->
-  <script type="module">
-    import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
+  <!-- Servicios -->
+  <div class="row" id="servicios">
+    <!-- Tus tarjetas de servicio aquí -->
+  </div>
 
-    let provider;
-    let signer;
-    const PAY_ADDRESS = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
+  <!-- Contacto -->
+  <div id="contacto" class="my-5 text-center">
+    <h2>¿Necesitas un presupuesto?</h2>
+    <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
 
-    async function connectWallet() {
-      if (window.ethereum) {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          const account = accounts[0];
+    <!-- Web3 -->
+    <button id="connectWallet" class="btn btn-success btn-lg">Conectar Wallet</button>
+    <form id="web3Form">
+      <p id="metamask-message"></p>
+      <p><strong>Balance:</strong> <span id="balance">0 MATIC</span></p>
+      <label for="paymentAmount">Cantidad a enviar (MATIC):</label>
+      <input type="number" id="paymentAmount" placeholder="Ej. 0.1" />
+      <label for="userMessage">Mensaje (opcional):</label>
+      <input type="text" id="userMessage" placeholder="Tu mensaje..." />
+      <button type="submit" class="btn btn-primary">Realizar Pago</button>
+    </form>
 
-          provider = new ethers.BrowserProvider(window.ethereum);
-          signer = await provider.getSigner();
+    <hr />
 
-          document.getElementById("metamask-message").innerText = `Conectado: ${account}`;
-          document.getElementById("web3Form").style.display = "block";
+    <!-- Formulario de contacto real -->
+    <form action="https://formsubmit.co/desbrocespontevedra@mail.com" method="POST">
+      <label for="name">Nombre:</label>
+      <input type="text" name="name" required>
+      <label for="email">Correo:</label>
+      <input type="email" name="email" required>
+      <label for="message">Mensaje:</label>
+      <textarea name="message" required></textarea>
+      <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+    </form>
 
-          updateBalance(account);
-        } catch (error) {
-          alert("Error al conectar wallet.");
-          console.error(error);
-        }
-      } else {
-        alert("Por favor instala MetaMask.");
-      }
-    }
+  </div>
+</div>
 
-    async function updateBalance(account) {
-      try {
-        const balance = await provider.getBalance(account);
-        const balanceInEth = ethers.formatEther(balance);
-        document.getElementById("balance").innerText = `${balanceInEth} MATIC`;
-      } catch (error) {
-        console.error("Error obteniendo balance:", error);
-      }
-    }
+<script type="module">
+import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
 
-    async function makePayment(e) {
-      e.preventDefault(); // evita POST HTTP que genera 405
+let provider;
+let signer;
+const PAY_ADDRESS = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
 
-      const amount = document.getElementById("paymentAmount").value;
-      const message = document.getElementById("userMessage").value;
+async function connectWallet() {
+  if(window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      provider = new ethers.BrowserProvider(window.ethereum);
+      signer = await provider.getSigner();
+      document.getElementById("metamask-message").innerText = `Conectado: ${account}`;
+      document.getElementById("web3Form").style.display = "block";
+      updateBalance(account);
+    } catch(err) { alert("Error al conectar wallet."); console.error(err); }
+  } else { alert("Por favor instala MetaMask."); }
+}
 
-      if (!amount || amount <= 0) return alert("Ingresa un valor válido");
+async function updateBalance(account) {
+  const balance = await provider.getBalance(account);
+  document.getElementById("balance").innerText = `${ethers.formatEther(balance)} MATIC`;
+}
 
-      try {
-        const amountInWei = ethers.parseEther(amount);
-        const tx = await signer.sendTransaction({
-          to: PAY_ADDRESS,
-          value: amountInWei,
-          data: message ? ethers.hexlify(ethers.toUtf8Bytes(message)) : undefined
-        });
+async function makePayment(e){
+  e.preventDefault();
+  const amount = document.getElementById("paymentAmount").value;
+  const message = document.getElementById("userMessage").value;
+  if(!amount || amount<=0) return alert("Ingresa un valor válido");
+  try{
+    const tx = await signer.sendTransaction({
+      to: PAY_ADDRESS,
+      value: ethers.parseEther(amount),
+      data: message? ethers.hexlify(ethers.toUtf8Bytes(message)): undefined
+    });
+    alert("Pago realizado. Ver en Polygonscan: https://polygonscan.com/tx/"+tx.hash);
+    updateBalance(await signer.getAddress());
+  }catch(err){ alert("Error en pago"); console.error(err); }
+}
 
-        alert("Pago realizado con éxito. Ver en Polygonscan: https://polygonscan.com/tx/" + tx.hash);
-        const account = await signer.getAddress();
-        updateBalance(account);
-      } catch (error) {
-        alert("Error al realizar el pago. Revisa la consola.");
-        console.error(error);
-      }
-    }
-
-    document.getElementById("connectWallet").addEventListener("click", connectWallet);
-    document.getElementById("web3Form").addEventListener("submit", makePayment);
-  </script>
+document.getElementById("connectWallet").addEventListener("click", connectWallet);
+document.getElementById("web3Form").addEventListener("submit", makePayment);
+</script>
 
 </body>
 </html>
