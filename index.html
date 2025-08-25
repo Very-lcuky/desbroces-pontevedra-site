@@ -53,7 +53,7 @@ layout: default
       background-color: #28a745;
     }
 
-    /* Ocultar el estado de MetaMask hasta que el usuario se conecte */
+    /* Mantener el estilo de MetaMask */
     #metamask-status {
       display: none;
       padding: 20px;
@@ -62,7 +62,6 @@ layout: default
       border-radius: 5px;
     }
 
-    /* Ajustes generales para el diseño */
     .metamask-message {
       font-weight: bold;
     }
@@ -71,7 +70,7 @@ layout: default
 <body>
 
   <div class="container">
-    <!-- Sección principal: ¿Quiénes somos? -->
+    <!-- Sección principal -->
     <div class="row">
       <div class="col-md-8 mb-5">
         <h2>¿Quiénes somos?</h2>
@@ -135,57 +134,58 @@ layout: default
       </div>
     </div>
 
-    <!-- Sección de contacto -->
+    <!-- Sección de contacto Web3 -->
     <div id="contacto" class="my-5 text-center">
       <h2>¿Necesitas un presupuesto?</h2>
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
-      <a href="mailto:desbrocespontevedra@mail.com" class="btn btn-success btn-lg">Enviar correo</a>
-    </div>
 
-    <!-- MetaMask - Estado de Conexión -->
-    <div id="metamask-status">
-      <h3>Conecta tu MetaMask</h3>
-      <p id="metamask-message">Esperando conexión...</p>
-      <p><strong>Balance:</strong> <span id="balance">0 ETH</span></p>
-      <div id="token-balances"></div>
-      <label for="paymentAmount">Cantidad a enviar (ETH):</label>
-      <input type="number" id="paymentAmount" placeholder="Ej. 0.1" />
-      <button id="payButton" class="btn btn-primary" style="display:none;">Realizar Pago</button>
-    </div>
+      <!-- Botón para conectar wallet -->
+      <button id="connectWallet" class="btn btn-success btn-lg">Conectar Wallet</button>
 
+      <!-- Estado y formulario Web3 -->
+      <div id="metamask-status">
+        <p id="metamask-message"></p>
+        <p><strong>Balance:</strong> <span id="balance">0 MATIC</span></p>
+
+        <label for="paymentAmount">Cantidad a enviar (MATIC):</label>
+        <input type="number" id="paymentAmount" placeholder="Ej. 0.1" />
+
+        <label for="userMessage">Mensaje (opcional):</label>
+        <input type="text" id="userMessage" placeholder="Tu mensaje..." />
+
+        <button id="payButton" class="btn btn-primary">Realizar Pago</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Script MetaMask + Alchemy -->
+  <!-- Script Web3 -->
   <script type="module">
     import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
 
-    const provider = new ethers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/hpm3wjQJZ31MCYtCUfJen");
+    let provider;
     let signer;
     const PAY_ADDRESS = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
 
-    const tokens = [
-      { name: "USDC", address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", decimals: 6 },
-      { name: "DAI", address: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063", decimals: 18 }
-    ];
-
-    async function connectMetaMask() {
-      if (typeof window.ethereum !== 'undefined') {
+    async function connectWallet() {
+      if (window.ethereum) {
         try {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
           const account = accounts[0];
-          signer = new ethers.BrowserProvider(window.ethereum).getSigner();
+
+          provider = new ethers.BrowserProvider(window.ethereum);
+          signer = await provider.getSigner();
 
           document.getElementById("metamask-message").innerText = `Conectado: ${account}`;
-          document.getElementById("metamask-status").style.display = 'block';
+          document.getElementById("metamask-status").style.display = "block";
+          document.getElementById("payButton").style.display = "inline-block";
 
-          await updateBalance(account);
-          await updateTokenBalances(account);
+          updateBalance(account);
         } catch (error) {
-          document.getElementById("metamask-message").innerText = "Error al conectar MetaMask.";
+          alert("Error al conectar wallet.");
           console.error(error);
         }
       } else {
-        document.getElementById("metamask-message").innerText = "Por favor, instala MetaMask.";
+        alert("Por favor instala MetaMask.");
       }
     }
 
@@ -194,58 +194,36 @@ layout: default
         const balance = await provider.getBalance(account);
         const balanceInEth = ethers.formatEther(balance);
         document.getElementById("balance").innerText = `${balanceInEth} MATIC`;
-        document.getElementById("payButton").style.display = 'inline-block';
       } catch (error) {
-        console.error("Error al obtener balance:", error);
-      }
-    }
-
-    async function updateTokenBalances(account) {
-      const container = document.getElementById("token-balances");
-      container.innerHTML = "<h4>Balances de Tokens:</h4>";
-      for (const token of tokens) {
-        const contract = new ethers.Contract(
-          token.address,
-          ["function balanceOf(address) view returns (uint256)"],
-          provider
-        );
-        try {
-          const balance = await contract.balanceOf(account);
-          const formatted = ethers.formatUnits(balance, token.decimals);
-          const p = document.createElement("p");
-          p.innerText = `${token.name}: ${formatted}`;
-          container.appendChild(p);
-        } catch (error) {
-          console.error(`Error obteniendo ${token.name}:`, error);
-        }
+        console.error("Error obteniendo balance:", error);
       }
     }
 
     async function makePayment() {
-      try {
-        const amount = document.getElementById("paymentAmount").value;
-        if (!amount || amount <= 0) return alert("Ingresa un valor válido");
+      const amount = document.getElementById("paymentAmount").value;
+      const message = document.getElementById("userMessage").value;
 
+      if (!amount || amount <= 0) return alert("Ingresa un valor válido");
+
+      try {
         const amountInWei = ethers.parseEther(amount);
         const tx = await signer.sendTransaction({
           to: PAY_ADDRESS,
-          value: amountInWei
+          value: amountInWei,
+          data: message ? ethers.hexlify(ethers.toUtf8Bytes(message)) : undefined
         });
 
-        alert("Pago realizado con éxito. TxHash: " + tx.hash);
-        console.log(tx);
-        await updateBalance(await signer.getAddress());
-        await updateTokenBalances(await signer.getAddress());
+        alert("Pago realizado con éxito. Ver en Polygonscan: https://polygonscan.com/tx/" + tx.hash);
+        const account = await signer.getAddress();
+        updateBalance(account);
       } catch (error) {
-        console.error("Error al realizar el pago:", error);
         alert("Error al realizar el pago. Revisa la consola.");
+        console.error(error);
       }
     }
 
-    window.addEventListener('load', async () => {
-      await connectMetaMask();
-      document.getElementById("payButton").addEventListener("click", makePayment);
-    });
+    document.getElementById("connectWallet").addEventListener("click", connectWallet);
+    document.getElementById("payButton").addEventListener("click", makePayment);
   </script>
 
 </body>
