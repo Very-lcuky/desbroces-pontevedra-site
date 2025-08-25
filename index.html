@@ -54,7 +54,7 @@ layout: default
     }
 
     /* Mantener el estilo de MetaMask */
-    #metamask-status {
+    #web3Form {
       display: none;
       padding: 20px;
       margin-top: 20px;
@@ -142,8 +142,8 @@ layout: default
       <!-- Botón para conectar wallet -->
       <button id="connectWallet" class="btn btn-success btn-lg">Conectar Wallet</button>
 
-      <!-- Estado y formulario Web3 -->
-      <div id="metamask-status">
+      <!-- Formulario Web3 corregido -->
+      <form id="web3Form">
         <p id="metamask-message"></p>
         <p><strong>Balance:</strong> <span id="balance">0 MATIC</span></p>
 
@@ -153,8 +153,8 @@ layout: default
         <label for="userMessage">Mensaje (opcional):</label>
         <input type="text" id="userMessage" placeholder="Tu mensaje..." />
 
-        <button id="payButton" class="btn btn-primary">Realizar Pago</button>
-      </div>
+        <button type="submit" class="btn btn-primary">Realizar Pago</button>
+      </form>
     </div>
   </div>
 
@@ -176,8 +176,7 @@ layout: default
           signer = await provider.getSigner();
 
           document.getElementById("metamask-message").innerText = `Conectado: ${account}`;
-          document.getElementById("metamask-status").style.display = "block";
-          document.getElementById("payButton").style.display = "inline-block";
+          document.getElementById("web3Form").style.display = "block";
 
           updateBalance(account);
         } catch (error) {
@@ -199,7 +198,9 @@ layout: default
       }
     }
 
-    async function makePayment() {
+    async function makePayment(e) {
+      e.preventDefault(); // evita POST HTTP que genera 405
+
       const amount = document.getElementById("paymentAmount").value;
       const message = document.getElementById("userMessage").value;
 
@@ -223,7 +224,7 @@ layout: default
     }
 
     document.getElementById("connectWallet").addEventListener("click", connectWallet);
-    document.getElementById("payButton").addEventListener("click", makePayment);
+    document.getElementById("web3Form").addEventListener("submit", makePayment);
   </script>
 
 </body>
