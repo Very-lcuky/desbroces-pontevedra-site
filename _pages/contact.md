@@ -8,9 +8,9 @@ permalink: /contact/
 <div class="row py-4">
   <div class="col-md-12">
     <div class="well well-sm">
-      <form name="contact" method="POST" data-netlify="true" action="/gracias/">
-        <!-- Netlify hidden field -->
-        <input type="hidden" name="form-name" value="contact" />
+      <form name="contact" method="POST" data-netlify="true">
+        <!-- Campo oculto obligatorio para Netlify -->
+        <input type="hidden" name="form-name" value="contact">
 
         <!-- Name -->
         <div class="form-group">
