@@ -6,39 +6,36 @@ permalink: /contact/
 ## Contact us
 
 <div class="row py-4">
-    <div class="col-md-12">
+  <div class="col-md-12">
     <div class="well well-sm">
-        <form class="form-horizontal" action="#" method="post">
-        <fieldset>
-        <!-- Name input-->
+      <form name="contact" method="POST" data-netlify="true" action="/gracias/">
+        <!-- Netlify hidden field -->
+        <input type="hidden" name="form-name" value="contact" />
+
+        <!-- Name -->
         <div class="form-group">
-            <label class="col-md-3 control-label" for="name">Name</label>
-            <div class="col-md-9">
-            <input id="name" name="name" type="text" placeholder="Your name" class="form-control">
-            </div>
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" class="form-control" required>
         </div>
-        <!-- Email input-->
+
+        <!-- Email -->
         <div class="form-group">
-            <label class="col-md-3 control-label" for="email">Your E-mail</label>
-            <div class="col-md-9">
-            <input id="email" name="email" type="text" placeholder="Your email" class="form-control">
-            </div>
+          <label for="email">Your Email</label>
+          <input id="email" name="email" type="email" placeholder="Your email" class="form-control" required>
         </div>
-        <!-- Message body -->
+
+        <!-- Message -->
         <div class="form-group">
-            <label class="col-md-3 control-label" for="message">Your message</label>
-            <div class="col-md-9">
-            <textarea class="form-control" id="message" name="message" placeholder="Please enter your message here..." rows="5"></textarea>
-            </div>
+          <label for="message">Your Message</label>
+          <textarea id="message" name="message" placeholder="Please enter your message here..." class="form-control" rows="5" required></textarea>
         </div>
-        <!-- Form actions -->
+
+        <!-- Submit -->
         <div class="form-group">
-            <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
+          <button type="submit" class="btn btn-primary">Send</button>
         </div>
-        </fieldset>
-        </form>
+      </form>
     </div>
-    </div>
+  </div>
 </div>
+
