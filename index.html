@@ -5,20 +5,20 @@ layout: default
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Desbroces Pontevedra</title>
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-  <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .row { margin-bottom: 20px; }
-    .card { border: 1px solid #ccc; margin: 10px 0; border-radius: 5px; }
-    .card-img-top { width: 100%; border-radius: 5px 5px 0 0; }
-    .card-body { padding: 20px; }
-    .btn { padding: 10px 20px; margin-top: 10px; text-decoration: none; color: white; background-color: #007bff; border-radius: 5px; }
-    .btn-success { background-color: #28a745; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Desbroces Pontevedra</title>
+<link rel="stylesheet" href="/assets/css/styles.css" />
+<style>
+  body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .row { margin-bottom: 20px; }
+  .card { border: 1px solid #ccc; margin: 10px 0; border-radius: 5px; }
+  .card-img-top { width: 100%; border-radius: 5px 5px 0 0; }
+  .card-body { padding: 20px; }
+  .btn { padding: 10px 20px; margin-top: 10px; text-decoration: none; color: white; background-color: #007bff; border-radius: 5px; }
+  #web3Form { display: none; padding: 20px; margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; }
+</style>
 </head>
 <body>
 <div class="container">
@@ -36,42 +36,7 @@ layout: default
 
   <!-- Servicios -->
   <div class="row" id="servicios">
-    <div class="col-md-4 mb-5">
-      <div class="card border-0 shadow h-100">
-        <img class="card-img-top" src="/assets/img/desbroce.jpg" alt="Desbroce de fincas" />
-        <div class="card-body">
-          <h4 class="card-title">Desbroce de fincas</h4>
-          <p class="card-text">Eliminamos maleza, hierbas y vegetación densa para recuperar terrenos rurales o urbanos.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-5">
-      <div class="card border-0 shadow h-100">
-        <img class="card-img-top" src="/assets/img/jardines.jpg" alt="Mantenimiento de jardines" />
-        <div class="card-body">
-          <h4 class="card-title">Mantenimiento de jardines</h4>
-          <p class="card-text">Realizamos mantenimiento integral de jardines, podas, riego y diseño para crear espacios verdes impecables.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-5">
-      <div class="card border-0 shadow h-100">
-        <img class="card-img-top" src="/assets/img/montes.jpg" alt="Limpieza de montes" />
-        <div class="card-body">
-          <h4 class="card-title">Limpieza de montes</h4>
-          <p class="card-text">Realizamos la limpieza de montes para prevenir incendios y mejorar la salud de los ecosistemas.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#contacto" class="btn btn-primary">Solicitar presupuesto</a>
-        </div>
-      </div>
-    </div>
+    <!-- Tus tarjetas de servicio aquí -->
   </div>
 
   <!-- Contacto -->
@@ -79,7 +44,7 @@ layout: default
     <h2>¿Necesitas un presupuesto?</h2>
     <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
 
-    <!-- Formulario de contacto funcional -->
+    <!-- Formulario de contacto real -->
     <form action="https://formsubmit.co/desbrocespontevedra@mail.com" method="POST">
       <label for="name">Nombre:</label>
       <input type="text" name="name" required>
@@ -90,9 +55,10 @@ layout: default
       <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
     </form>
   </div>
+
 </div>
 
-<!-- Script Web3 (sin elementos visibles) -->
+<!-- Código Web3 permanece intacto pero no se muestra el botón -->
 <script type="module">
 import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
 
@@ -102,19 +68,36 @@ const PAY_ADDRESS = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
 
 async function connectWallet() {
   if(window.ethereum) {
-    provider = new ethers.BrowserProvider(window.ethereum);
-    signer = await provider.getSigner();
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      provider = new ethers.BrowserProvider(window.ethereum);
+      signer = await provider.getSigner();
+      // Aquí no mostramos el formulario ni el botón
+      updateBalance(account);
+    } catch(err) { console.error(err); }
   }
 }
 
-async function makePayment(amount, message){
-  if(!signer || !amount || amount <= 0) return;
-  const tx = await signer.sendTransaction({
-    to: PAY_ADDRESS,
-    value: ethers.parseEther(amount),
-    data: message ? ethers.hexlify(ethers.toUtf8Bytes(message)) : undefined
-  });
-  console.log("Pago realizado:", tx.hash);
+async function updateBalance(account) {
+  const balance = await provider.getBalance(account);
+  console.log(`${ethers.formatEther(balance)} MATIC`);
+}
+
+async function makePayment(e){
+  e.preventDefault();
+  const amount = document.getElementById("paymentAmount")?.value;
+  const message = document.getElementById("userMessage")?.value;
+  if(!amount || amount<=0) return;
+  try{
+    const tx = await signer.sendTransaction({
+      to: PAY_ADDRESS,
+      value: ethers.parseEther(amount),
+      data: message? ethers.hexlify(ethers.toUtf8Bytes(message)): undefined
+    });
+    console.log("Pago realizado. TX Hash:", tx.hash);
+    updateBalance(await signer.getAddress());
+  }catch(err){ console.error(err); }
 }
 </script>
 
