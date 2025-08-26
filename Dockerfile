@@ -1,18 +1,18 @@
-# Usa la imagen oficial de Nginx
-FROM nginx:latest
+# Imagen base de Nginx oficial (ligera)
+FROM nginx:stable-alpine
 
-# Borra el contenido por defecto de nginx
+# Elimina contenido por defecto de Nginx
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copia los archivos generados por Jekyll
+# Copia la carpeta generada por Jekyll
 COPY _site/ /usr/share/nginx/html/
 
-# Expone el puerto 80 (HTTP) y 443 (HTTPS si tu proxy/load balancer lo maneja)
-EXPOSE 80 443
+# Cambiar Nginx a escuchar en 8080 (Cloud Run usa $PORT=8080)
+RUN sed -i 's/listen\s\+80;/listen 8080;/' /etc/nginx/conf.d/default.conf
 
-# Opcional: Copia configuración personalizada de Nginx si quieres redirecciones, gzip, headers, etc.
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Exponer puerto 8080
+EXPOSE 8080
 
-# Comando por defecto para iniciar Nginx en primer plano
+# Arrancar Nginx
 CMD ["nginx", "-g", "daemon off;"]
 
