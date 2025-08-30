@@ -63,7 +63,7 @@ layout: default
     </div>
   </div>
 
-  <!-- Integración Web3 (contrato) -->
+  <!-- Integración Web3 automática -->
   <script type="module">
     import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
 
@@ -72,26 +72,20 @@ layout: default
 
     let provider, signer, contract;
 
-    async function connectWallet() {
+    async function initWeb3() {
       if (window.ethereum) {
-        provider = new ethers.BrowserProvider(window.ethereum);
-        signer = await provider.getSigner();
-        contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-        alert("Wallet conectada: " + await signer.getAddress());
-        // Aquí puedes llamar funciones de tu contrato, por ejemplo enviar pagos desde un script interno
+        try {
+          provider = new ethers.BrowserProvider(window.ethereum);
+          signer = await provider.getSigner();
+          contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+          console.log("✅ MetaMask conectada:", await signer.getAddress());
+          // Aquí puedes ejecutar cualquier función de tu contrato, por ejemplo:
+          // sendPayment("0.01", "Mensaje interno");
+        } catch (err) {
+          console.error("Error conectando MetaMask:", err);
+        }
       } else {
-        alert("Instala MetaMask para continuar");
-      }
-    }
-
-    async function sendPayment(amount, message) {
-      try {
-        const tx = await contract.pay(message, { value: ethers.parseEther(amount) });
-        await tx.wait();
-        alert("✅ Pago realizado");
-      } catch (err) {
-        console.error(err);
-        alert("❌ Error en el pago");
+        console.log("MetaMask no detectada");
       }
     }
 
@@ -112,9 +106,10 @@ layout: default
       }
     }
 
-    window.onload = () => {
-      fetchChainstackData();
-    };
+    window.addEventListener('DOMContentLoaded', () => {
+      initWeb3();           // Conecta MetaMask automáticamente
+      fetchChainstackData(); // Obtiene datos de Chainstack
+    });
   </script>
 </body>
 </html>
