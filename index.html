@@ -17,10 +17,6 @@ layout: default
     .card-img-top { width: 100%; border-radius: 5px 5px 0 0; }
     .card-body { padding: 20px; }
     .btn { padding: 10px 20px; margin-top: 10px; text-decoration: none; color: white; background-color: #007bff; border-radius: 5px; cursor: pointer; }
-    #web3Form { padding: 20px; margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; background: #fff; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    table, th, td { border: 1px solid #ccc; }
-    th, td { padding: 8px; text-align: center; }
     #chainstack-data-section { display: none; }
   </style>
 
@@ -59,25 +55,6 @@ layout: default
       <a href="/contact/" class="btn btn-primary btn-lg">Ir al formulario de contacto</a>
     </div>
 
-    <!-- Formulario Web3 -->
-    <div id="web3Form" class="my-5 text-center">
-      <h2>💳 Realizar un pago</h2>
-      <button onclick="connectWallet()" class="btn">Conectar Wallet</button>
-      <div style="margin-top:20px;">
-        <input id="paymentAmount" type="number" step="0.01" placeholder="Monto en ETH" />
-        <input id="userMessage" type="text" placeholder="Mensaje (opcional)" />
-        <button onclick="sendPayment()" class="btn">Enviar Pago</button>
-      </div>
-
-      <h3>📜 Historial de pagos</h3>
-      <table>
-        <thead>
-          <tr><th>De</th><th>Monto</th><th>Mensaje</th><th>Fecha</th></tr>
-        </thead>
-        <tbody id="paymentsTable"></tbody>
-      </table>
-    </div>
-
     <!-- Datos de Chainstack -->
     <div id="chainstack-data-section" class="my-5 text-center">
       <h2>Datos de Chainstack</h2>
@@ -86,35 +63,12 @@ layout: default
     </div>
   </div>
 
-  <!-- Código Web3 -->
+  <!-- Integración Web3 (contrato) -->
   <script type="module">
     import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
 
     const CONTRACT_ADDRESS = "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B";
-    const CONTRACT_ABI = [
-      { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
-      { "anonymous": false, "inputs": [
-          { "indexed": true, "internalType": "address", "name": "from", "type": "address" },
-          { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
-          { "indexed": false, "internalType": "string", "name": "message", "type": "string" }
-        ], "name": "PaymentReceived", "type": "event"
-      },
-      { "inputs": [], "name": "getPayments", "outputs": [{
-          "components": [
-            { "internalType": "address", "name": "from", "type": "address" },
-            { "internalType": "uint256", "name": "amount", "type": "uint256" },
-            { "internalType": "string", "name": "message", "type": "string" },
-            { "internalType": "uint256", "name": "timestamp", "type": "uint256" }
-          ],
-          "internalType": "struct DesbrocesPay.Payment[]",
-          "name": "",
-          "type": "tuple[]"
-        }],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      { "inputs": [{ "internalType": "string", "name": "_message", "type": "string" }], "name": "pay", "outputs": [], "stateMutability": "payable", "type": "function" }
-    ];
+    const CONTRACT_ABI = [ /* ABI completo de tu contrato */ ];
 
     let provider, signer, contract;
 
@@ -124,50 +78,24 @@ layout: default
         signer = await provider.getSigner();
         contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
         alert("Wallet conectada: " + await signer.getAddress());
-        loadPayments();
+        // Aquí puedes llamar funciones de tu contrato, por ejemplo enviar pagos desde un script interno
       } else {
         alert("Instala MetaMask para continuar");
       }
     }
 
-    async function sendPayment() {
-      const amount = document.getElementById("paymentAmount").value;
-      const message = document.getElementById("userMessage").value;
-      if (!amount || amount <= 0) return alert("Introduce un monto válido");
-
+    async function sendPayment(amount, message) {
       try {
         const tx = await contract.pay(message, { value: ethers.parseEther(amount) });
         await tx.wait();
         alert("✅ Pago realizado");
-        loadPayments();
       } catch (err) {
         console.error(err);
         alert("❌ Error en el pago");
       }
     }
 
-    async function loadPayments() {
-      if (!contract) return;
-      try {
-        const payments = await contract.getPayments();
-        const table = document.getElementById("paymentsTable");
-        table.innerHTML = "";
-        payments.forEach(p => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${p.from}</td>
-            <td>${ethers.formatEther(p.amount)} ETH</td>
-            <td>${p.message}</td>
-            <td>${new Date(Number(p.timestamp) * 1000).toLocaleString()}</td>
-          `;
-          table.appendChild(row);
-        });
-      } catch (err) {
-        console.error("Error cargando pagos:", err);
-      }
-    }
-
-    // Chainstack
+    // Función Chainstack (sin cambios)
     async function fetchChainstackData() {
       try {
         const response = await fetch("/.netlify/functions/connect-chainstack");
