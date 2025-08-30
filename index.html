@@ -18,6 +18,11 @@ layout: default
     .card-body { padding: 20px; }
     .btn { padding: 10px 20px; margin-top: 10px; text-decoration: none; color: white; background-color: #007bff; border-radius: 5px; }
     #web3Form { display: none; padding: 20px; margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; }
+
+    /* Ocultar la sección de Chainstack al cargar la página */
+    #chainstack-data-section {
+      display: none;
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -119,6 +124,8 @@ layout: default
         if (data.success) {
           // Mostrar los datos en la página
           document.getElementById("chainstack-data").textContent = JSON.stringify(data.data, null, 2);
+          // Hacer visible la sección de Chainstack
+          document.getElementById("chainstack-data-section").style.display = "block";
         } else {
           document.getElementById("chainstack-data").textContent = "Error al conectar con Chainstack.";
         }
