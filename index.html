@@ -22,7 +22,7 @@ layout: default
     #chainstack-data-section { display: none; }
   </style>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DZ1E6L1L8"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -39,57 +39,37 @@ layout: default
       <div class="col-md-8 mb-5">
         <h2>¿Quiénes somos?</h2>
         <hr />
-        <p>En <strong>Desbroces Pontevedra</strong> nos especializamos en la <strong>limpieza y desbroce de fincas</strong>, parcelas, jardines y montes en toda la provincia de <strong>Pontevedra y Galicia</strong>. También ofrecemos servicios en Asturias, Vigo y Lugo, adaptándonos a la <strong>obligación de limpiar fincas</strong> establecida en Galicia, Cataluña y Castilla y León.</p>
-        <p>Contamos con maquinaria profesional, <strong>desbroce con maquinaria pesada</strong> y un equipo cualificado que garantiza resultados óptimos, ya sea para preparar un terreno, conservarlo, prevenir incendios o ponerlo a la venta.</p>
+        <p>En <strong>Desbroces Pontevedra</strong> nos especializamos en la <strong>limpieza y desbroce de fincas</strong> en toda Galicia y Asturias, cumpliendo la <strong>obligación de limpiar fincas</strong> y ofreciendo soluciones profesionales con maquinaria y animales como cabras u ocas.</p>
         <a class="btn btn-primary btn-lg" href="/services/">Ver Servicios &raquo;</a>
       </div>
     </div>
 
-    <!-- Sección SEO: Obligación -->
-    <div class="row my-5">
-      <h2>Obligación de Limpiar Fincas en Galicia y España</h2>
-      <p>En comunidades como Galicia, Asturias, Cataluña y Castilla y León existe la <strong>obligación de limpiar fincas</strong> para evitar incendios y cumplir con la normativa autonómica. Realizamos <strong>trabajos de limpieza de fincas en Lugo</strong>, <strong>servicios en Vigo</strong> y <strong>mantenimiento de fincas en Pontevedra</strong> adaptados a cada cliente.</p>
-
-      <h3>Animales para Limpiar Fincas</h3>
-      <p>Además de maquinaria y mano de obra profesional, ofrecemos alternativas sostenibles como <strong>cabras para limpiar fincas</strong> o <strong>ocas para limpiar fincas</strong>. Estos <strong>animales para limpiar fincas</strong> permiten mantener los terrenos en buen estado de manera ecológica.</p>
-
-      <h3>Empresas que Limpian Fincas en Galicia y Asturias</h3>
-      <p>Si buscas <strong>empresas en Asturias que limpian fincas</strong> o una <strong>empresa de desbroces en Vigo</strong>, en Desbroces Pontevedra ofrecemos <strong>desbroces forestales en Galicia</strong>, <strong>limpieza de montes</strong> y <strong>desbroce de parcelas rústicas</strong>. Nos encargamos de <strong>desbroce y tala de maleza</strong>, <strong>limpieza de fincas contra incendios</strong> y <strong>desbroce con maquinaria profesional</strong>.</p>
-    </div>
-
-    <!-- Sección SEO: Servicios ampliados -->
-    <div class="row my-5">
-      <h2>Servicios de Desbroce y Mantenimiento de Fincas en Galicia</h2>
-      <p>En <strong>Desbroces Pontevedra</strong> realizamos <strong>desbroce de fincas en Galicia</strong>, <strong>desbroce de terrenos en Pontevedra</strong> y <strong>limpieza de parcelas</strong> para propietarios particulares, empresas e instituciones públicas.</p>
-      <p>Nuestro servicio incluye <strong>mantenimiento de fincas en Pontevedra</strong>, <strong>desbroce forestal</strong>, <strong>limpieza de montes</strong> y preparación de terrenos agrícolas. Gracias a nuestro equipo y maquinaria, ofrecemos un trabajo rápido, eficaz y seguro, siempre cumpliendo con la normativa de <strong>obligación de limpiar fincas en Galicia</strong>.</p>
-    </div>
-
-    <!-- Secciones de servicios -->
-    <div class="row" id="servicios"></div>
-
-    <!-- Contacto -->
+    <!-- Sección contacto -->
     <div id="contacto" class="my-5 text-center">
       <h2>¿Necesitas un presupuesto?</h2>
-      <p>Contáctanos para recibir una valoración gratuita y sin compromiso sobre el <strong>desbroce y limpieza de fincas en Galicia, Asturias o Vigo</strong>.</p>
-      <a href="/contact/" class="btn btn-primary btn-lg">Ir al formulario de contacto</a>
+      <p>Contáctanos para recibir una valoración gratuita.</p>
+      <form id="contactForm">
+        <input type="text" id="nombre" placeholder="Tu nombre" required><br><br>
+        <input type="email" id="email" placeholder="Tu correo" required><br><br>
+        <textarea id="mensaje" placeholder="Escribe tu mensaje..." required></textarea><br><br>
+        <button type="submit" class="btn">Enviar</button>
+      </form>
     </div>
 
     <!-- Datos Chainstack -->
     <div id="chainstack-data-section" class="my-5 text-center">
       <h2>Datos de Chainstack</h2>
-      <p>Estos son los datos que hemos obtenido de Chainstack:</p>
       <pre id="chainstack-data">Cargando datos de Chainstack...</pre>
     </div>
 
   </div>
 
-  <!-- Integración Web3 y Firebase -->
+  <!-- Scripts Firebase + Firestore + Netlify Function -->
   <script type="module">
-    import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-    // Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyD2R0y50udk3Su0bFnLligDclDGh5UrlgU",
       authDomain: "desgroces-pontevedra.firebaseapp.com",
@@ -101,45 +81,38 @@ layout: default
     };
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const db = getFirestore(app);
 
-    // Contrato Ethereum
-    const CONTRACT_ADDRESS = "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B";
-    const CONTRACT_ABI = [ /* Pega aquí tu ABI completo */ ];
+    async function guardarLead(nombre, email, mensaje) {
+      try {
+        // Firestore
+        await addDoc(collection(db, "leads"), { nombre, email, mensaje, fecha: new Date() });
 
-    let provider, signer, contract;
+        // Notificación por correo usando Netlify Function
+        await fetch("/.netlify/functions/sendLead", {
+          method: "POST",
+          body: JSON.stringify({ nombre, email, mensaje })
+        });
 
-    async function connectWallet() {
-      if (window.ethereum) {
-        provider = new ethers.BrowserProvider(window.ethereum);
-        signer = await provider.getSigner();
-        contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-        console.log("Wallet conectada:", await signer.getAddress());
-      } else {
-        console.warn("MetaMask no está instalado");
+        alert("✅ Tu mensaje se ha guardado y enviado correctamente.");
+      } catch (e) {
+        console.error(e);
+        alert("❌ Error al enviar el mensaje.");
       }
     }
 
-    async function pagar(message, valueEth) {
-      if (!contract) return console.error("Wallet no conectada");
-      const tx = await contract.pay(message, { value: ethers.parseEther(valueEth) });
-      await tx.wait();
-      console.log("Pago realizado:", tx);
-    }
-
-    async function verBalance() {
-      if (!contract) return console.error("Wallet no conectada");
-      const balance = await contract.getBalance();
-      console.log("Balance del contrato:", ethers.formatEther(balance), "ETH");
-    }
-
-    async function verPagos() {
-      if (!contract) return console.error("Wallet no conectada");
-      const payments = await contract.getPayments();
-      console.log("Pagos recibidos:", payments);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      connectWallet();
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector("#contactForm");
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const nombre = form.querySelector("#nombre").value;
+          const email = form.querySelector("#email").value;
+          const mensaje = form.querySelector("#mensaje").value;
+          await guardarLead(nombre, email, mensaje);
+          form.reset();
+        });
+      }
     });
   </script>
 
@@ -156,12 +129,13 @@ layout: default
           document.getElementById("chainstack-data").textContent = "Error al conectar con Chainstack.";
         }
       } catch (error) {
-        console.error("Error al conectar con Chainstack:", error);
+        console.error(error);
         document.getElementById("chainstack-data").textContent = "Hubo un error en la conexión.";
       }
     }
     window.onload = () => { fetchChainstackData(); };
   </script>
+
 </body>
 </html>
 
