@@ -32,7 +32,7 @@ layout: default
 <body>
   <div class="container">
 
-    <!-- Quiénes somos -->
+    <!-- Tu contenido actual aquí (Quiénes somos, servicios, contacto, etc.) -->
     <div class="row">
       <div class="col-md-8 mb-5">
         <h2>¿Quiénes somos?</h2>
@@ -43,53 +43,86 @@ layout: default
       </div>
     </div>
 
-    <!-- Servicios -->
-    <div class="row" id="servicios">
-      <!-- Tus tarjetas de servicio aquí -->
-    </div>
+    <!-- Secciones de servicios, contacto y Chainstack ya existentes -->
+    <div class="row" id="servicios"></div>
 
-    <!-- Contacto -->
     <div id="contacto" class="my-5 text-center">
       <h2>¿Necesitas un presupuesto?</h2>
       <p>Contáctanos para recibir una valoración gratuita y sin compromiso.</p>
       <a href="/contact/" class="btn btn-primary btn-lg">Ir al formulario de contacto</a>
     </div>
 
-    <!-- Datos de Chainstack -->
     <div id="chainstack-data-section" class="my-5 text-center">
       <h2>Datos de Chainstack</h2>
       <p>Estos son los datos que hemos obtenido de Chainstack:</p>
       <pre id="chainstack-data">Cargando datos de Chainstack...</pre>
     </div>
+
   </div>
 
-  <!-- Integración Web3 automática -->
+  <!-- Integración Web3 y Firebase sin tocar diseño -->
   <script type="module">
     import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.esm.min.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
 
+    // Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2R0y50udk3Su0bFnLligDclDGh5UrlgU",
+      authDomain: "desgroces-pontevedra.firebaseapp.com",
+      projectId: "desgroces-pontevedra",
+      storageBucket: "desgroces-pontevedra.firebasestorage.app",
+      messagingSenderId: "259273313934",
+      appId: "1:259273313934:web:0a8ce2cd3f16bdb00bc3df",
+      measurementId: "G-4JM2QFYVCP"
+    };
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Contrato Ethereum
     const CONTRACT_ADDRESS = "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B";
-    const CONTRACT_ABI = [ /* ABI completo de tu contrato */ ];
+    const CONTRACT_ABI = [ /* Pega aquí tu ABI completo */ ];
 
     let provider, signer, contract;
 
-    async function initWeb3() {
+    async function connectWallet() {
       if (window.ethereum) {
-        try {
-          provider = new ethers.BrowserProvider(window.ethereum);
-          signer = await provider.getSigner();
-          contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-          console.log("✅ MetaMask conectada:", await signer.getAddress());
-          // Aquí puedes ejecutar cualquier función de tu contrato, por ejemplo:
-          // sendPayment("0.01", "Mensaje interno");
-        } catch (err) {
-          console.error("Error conectando MetaMask:", err);
-        }
+        provider = new ethers.BrowserProvider(window.ethereum);
+        signer = await provider.getSigner();
+        contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+        console.log("Wallet conectada:", await signer.getAddress());
       } else {
-        console.log("MetaMask no detectada");
+        console.warn("MetaMask no está instalado");
       }
     }
 
-    // Función Chainstack (sin cambios)
+    async function pagar(message, valueEth) {
+      if (!contract) return console.error("Wallet no conectada");
+      const tx = await contract.pay(message, { value: ethers.parseEther(valueEth) });
+      await tx.wait();
+      console.log("Pago realizado:", tx);
+    }
+
+    async function verBalance() {
+      if (!contract) return console.error("Wallet no conectada");
+      const balance = await contract.getBalance();
+      console.log("Balance del contrato:", ethers.formatEther(balance), "ETH");
+    }
+
+    async function verPagos() {
+      if (!contract) return console.error("Wallet no conectada");
+      const payments = await contract.getPayments();
+      console.log("Pagos recibidos:", payments);
+    }
+
+    // Conectar wallet automáticamente al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      connectWallet();
+    });
+  </script>
+
+  <!-- Script Chainstack existente -->
+  <script type="module">
     async function fetchChainstackData() {
       try {
         const response = await fetch("/.netlify/functions/connect-chainstack");
@@ -105,11 +138,7 @@ layout: default
         document.getElementById("chainstack-data").textContent = "Hubo un error en la conexión.";
       }
     }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      initWeb3();           // Conecta MetaMask automáticamente
-      fetchChainstackData(); // Obtiene datos de Chainstack
-    });
+    window.onload = () => { fetchChainstackData(); };
   </script>
 </body>
 </html>
