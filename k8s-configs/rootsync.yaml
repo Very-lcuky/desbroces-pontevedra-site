@@ -1,0 +1,13 @@
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: desbroces-root-sync
+  namespace: config-management-system
+spec:
+  sourceFormat: hierarchy
+  git:
+    repo: https://github.com/Very-lcuky/desbroces-pontevedra-site.git
+    branch: main
+    dir: k8s-configs
+    auth: none
+

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desbroces-web
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: desbroces-web
+  template:
+    metadata:
+      labels:
+        app: desbroces-web
+    spec:
+      containers:
+      - name: web
+        image: gcr.io/useful-memory-464107-d6/desbroces-web:latest
+        ports:
+        - containerPort: 8080
+
