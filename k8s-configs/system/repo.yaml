@@ -1,0 +1,9 @@
+apiVersion: configmanagement.gke.io/v1
+kind: Repo
+metadata:
+  name: root
+spec:
+  branch: main
+  git:
+    repo: https://github.com/Very-lcuky/desbroces-pontevedra-site.git
+    dir: k8s-configs
