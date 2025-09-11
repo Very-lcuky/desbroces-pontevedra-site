@@ -1,4 +1,4 @@
-name: Deploy to Google Cloud
+name: Deploy to Google Cloud Run
 
 on:
   push:
@@ -12,7 +12,6 @@ jobs:
     env:
       THIRDWEB_SECRET_KEY: ${{ secrets.THIRDWEB_SECRET_KEY }}
       GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-      GCP_SA_KEY_2: ${{ secrets.GCP_SA_KEY_2 }}  # si usas segunda cuenta
 
     steps:
       - name: Checkout repository
@@ -26,23 +25,28 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Authenticate Google Cloud (primer secreto)
+      - name: Authenticate Google Cloud
         run: |
-          echo "$GCP_SA_KEY" > gcp-key.json
+          printf "%s" "$GCP_SA_KEY" > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project useful-memory-464107-d6
 
-      # Opcional: autenticar segunda cuenta si la necesitas
-      - name: Authenticate Google Cloud (segunda cuenta)
-        if: env.GCP_SA_KEY_2 != ''
+      - name: Build Docker image
         run: |
-          echo "$GCP_SA_KEY_2" > gcp-key2.json
-          gcloud auth activate-service-account --key-file=gcp-key2.json
+          docker build -t gcr.io/useful-memory-464107-d6/my-service:latest .
 
-      - name: Deploy to Google Cloud
+      - name: Push Docker image to Google Container Registry
         run: |
-          # Reemplaza con tu comando real de deploy
-          echo "Despliegue simulado: reemplaza con tu comando real"
+          gcloud auth configure-docker
+          docker push gcr.io/useful-memory-464107-d6/my-service:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy my-service \
+            --image gcr.io/useful-memory-464107-d6/my-service:latest \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated
 
       - name: Test Thirdweb SDK
         run: |
