@@ -9,12 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
-      GCP_PROJECT: useful-memory-464107-d6
-      IMAGE_NAME: gcr.io/useful-memory-464107-d6/my-image
-      SERVICE_NAME: my-service
-      REGION: us-central1
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -22,19 +16,25 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ env.GCP_PROJECT }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          version: 'latest'
+
+      - name: Authenticate Google Cloud
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          echo "$GCP_SA_KEY" | base64 --decode > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json
+          gcloud config set project useful-memory-464107-d6
 
       - name: Build Docker image
         run: |
-          gcloud builds submit --tag $IMAGE_NAME .
+          gcloud builds submit --tag gcr.io/useful-memory-464107-d6/my-image .
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy $SERVICE_NAME \
-            --image $IMAGE_NAME \
-            --region $REGION \
+          gcloud run deploy my-service \
+            --image gcr.io/useful-memory-464107-d6/my-image \
+            --region us-central1 \
             --platform managed \
             --allow-unauthenticated
 
