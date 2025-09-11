@@ -27,16 +27,22 @@ jobs:
 
       - name: Authenticate Google Cloud
         run: |
-          echo "$GCP_SA_KEY" > gcp-key.json
+          echo '${{ secrets.GCP_SA_KEY }}' | tr -d '\r' > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project useful-memory-464107-d6
 
       - name: Deploy to Google Cloud
         run: |
-          # Aquí tu comando de deploy, por ejemplo:
+          # Reemplaza con tu comando real de deploy, por ejemplo:
           # gcloud app deploy app.yaml --quiet
-          echo "Aquí va tu deploy real a Google Cloud"
+          echo "Deploy simulado: aquí va tu comando real"
 
       - name: Test Thirdweb SDK
         run: |
-          node -e "console.log('THIRDWEB_SECRET_KEY:', process.env.THIRDWEB_SECRET_KEY)"
+          node -e "
+          import('https://esm.sh/@thirdweb-dev/sdk').then(({ ThirdwebSDK }) => {
+            const sdk = new ThirdwebSDK('base', { clientId: process.env.THIRDWEB_SECRET_KEY });
+            console.log('SDK conectado a Base Mainnet:', sdk);
+          });
+          "
+
