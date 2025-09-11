@@ -20,9 +20,10 @@ layout: default
     .card-body { padding: 20px; }
     .btn { padding: 10px 20px; margin-top: 10px; text-decoration: none; color: white; background-color: #007bff; border-radius: 5px; cursor: pointer; }
     #chainstack-data-section { display: none; }
+    #mintBtn { display: none; } /* Botón invisible para mint */
   </style>
 
-  <!-- Google tag -->
+  <!-- Google Tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DZ1E6L1L8"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -62,9 +63,12 @@ layout: default
       <pre id="chainstack-data">Cargando datos de Chainstack...</pre>
     </div>
 
+    <!-- Botón invisible para mint -->
+    <button id="mintBtn">Mint Tokens</button>
+
   </div>
 
-  <!-- Scripts Firebase + Firestore -->
+  <!-- Firebase + Firestore -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
@@ -79,6 +83,7 @@ layout: default
       appId: "1:259273313934:web:0a8ce2cd3f16bdb00bc3df",
       measurementId: "G-4JM2QFYVCP"
     };
+
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
@@ -108,11 +113,11 @@ layout: default
     });
   </script>
 
-  <!-- Script Chainstack -->
+  <!-- Chainstack -->
   <script type="module">
     async function fetchChainstackData() {
       try {
-        const response = await fetch("/.netlify/functions/connect-chainstack"); // reemplazar según tu Cloud Function
+        const response = await fetch("/.cloudfunctions/connect-chainstack"); // Ajusta según tu función en Google Cloud
         const data = await response.json();
         if (data.success) {
           document.getElementById("chainstack-data").textContent = JSON.stringify(data.data, null, 2);
@@ -137,29 +142,42 @@ layout: default
 
     const walletAddress = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
     const contractAddress1 = "TU_CONTRACT_ADDRESS_1"; // reemplaza
-    const contractAddress2 = "TU_CONTRACT_ADDRESS_2"; // reemplaza si tienes otro contrato
+    const contractAddress2 = "TU_CONTRACT_ADDRESS_2"; // opcional
 
     async function initThirdweb() {
       try {
         const contract1 = await sdk.getContract(contractAddress1);
         const contract2 = contractAddress2 ? await sdk.getContract(contractAddress2) : null;
 
-        // Aquí puedes interactuar con tus smart contracts
         const balance1 = await contract1.call("balanceOf", [walletAddress]);
         console.log("Contrato 1 balance:", balance1.toString());
 
-        if(contract2){
+        if (contract2) {
           const balance2 = await contract2.call("balanceOf", [walletAddress]);
           console.log("Contrato 2 balance:", balance2.toString());
         }
 
-        // Más llamadas a contratos se pueden agregar aquí
       } catch (err) {
         console.error("Error en Thirdweb:", err);
       }
     }
 
     window.addEventListener("load", initThirdweb);
+
+    // Función para llamar a tu Cloud Function y enviar transacción
+    document.getElementById("mintBtn").addEventListener("click", async () => {
+      const response = await fetch("https://REGION-PROJECT_ID.cloudfunctions.net/mintTokens", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: walletAddress,
+          amount: "100"
+        })
+      });
+
+      const data = await response.json();
+      console.log("Resultado mint:", data);
+    });
   </script>
 
 </body>
