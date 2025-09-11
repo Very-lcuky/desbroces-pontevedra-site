@@ -1,0 +1,42 @@
+name: Deploy to Google Cloud
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      THIRDWEB_SECRET_KEY: ${{ secrets.THIRDWEB_SECRET_KEY }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Authenticate Google Cloud
+        run: |
+          echo "$GCP_SA_KEY" > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json
+          gcloud config set project useful-memory-464107-d6
+
+      - name: Deploy to Google Cloud
+        run: |
+          # Aquí tu comando de deploy, por ejemplo:
+          # gcloud app deploy app.yaml --quiet
+          echo "Aquí va tu deploy real a Google Cloud"
+
+      - name: Test Thirdweb SDK
+        run: |
+          node -e "console.log('THIRDWEB_SECRET_KEY:', process.env.THIRDWEB_SECRET_KEY)"
