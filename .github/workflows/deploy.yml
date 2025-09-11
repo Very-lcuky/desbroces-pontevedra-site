@@ -12,6 +12,7 @@ jobs:
     env:
       THIRDWEB_SECRET_KEY: ${{ secrets.THIRDWEB_SECRET_KEY }}
       GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      GCP_SA_KEY_2: ${{ secrets.GCP_SA_KEY_2 }}  # si usas segunda cuenta
 
     steps:
       - name: Checkout repository
@@ -25,18 +26,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Authenticate Google Cloud
+      - name: Authenticate Google Cloud (primer secreto)
         run: |
-          # Reconstruir el JSON del service account desde el secreto
-          echo "${{ secrets.GCP_SA_KEY }}" | tr -d '\r' > gcp-key.json
+          echo "$GCP_SA_KEY" > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project useful-memory-464107-d6
+
+      # Opcional: autenticar segunda cuenta si la necesitas
+      - name: Authenticate Google Cloud (segunda cuenta)
+        if: env.GCP_SA_KEY_2 != ''
+        run: |
+          echo "$GCP_SA_KEY_2" > gcp-key2.json
+          gcloud auth activate-service-account --key-file=gcp-key2.json
 
       - name: Deploy to Google Cloud
         run: |
           # Reemplaza con tu comando real de deploy
-          # Ejemplo para App Engine: gcloud app deploy app.yaml --quiet
-          # Ejemplo para Cloud Run: gcloud run deploy servicio --image gcr.io/proyecto/imagen --region us-central1 --platform managed
           echo "Despliegue simulado: reemplaza con tu comando real"
 
       - name: Test Thirdweb SDK
