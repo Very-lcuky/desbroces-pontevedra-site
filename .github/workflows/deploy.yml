@@ -27,20 +27,17 @@ jobs:
 
       - name: Authenticate Google Cloud
         run: |
-          # Guardar el JSON del service account en un archivo
-          echo "${{ secrets.GCP_SA_KEY }}" > gcp-key.json
-          # Opcional: mostrar el JSON para debug (quítalo en producción)
-          # cat gcp-key.json
-          # Autenticar con gcloud
+          # Reconstruir el JSON del service account desde el secreto
+          echo "${{ secrets.GCP_SA_KEY }}" | tr -d '\r' > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project useful-memory-464107-d6
 
       - name: Deploy to Google Cloud
         run: |
-          # Reemplaza con tu comando real, por ejemplo:
-          # gcloud app deploy app.yaml --quiet
-          # o para GKE / Cloud Run
-          echo "Aquí va tu comando de deploy real a Google Cloud"
+          # Reemplaza con tu comando real de deploy
+          # Ejemplo para App Engine: gcloud app deploy app.yaml --quiet
+          # Ejemplo para Cloud Run: gcloud run deploy servicio --image gcr.io/proyecto/imagen --region us-central1 --platform managed
+          echo "Despliegue simulado: reemplaza con tu comando real"
 
       - name: Test Thirdweb SDK
         run: |
