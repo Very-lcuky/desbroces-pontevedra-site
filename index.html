@@ -64,7 +64,7 @@ layout: default
 
   </div>
 
-  <!-- Scripts Firebase + Firestore + Netlify Function -->
+  <!-- Scripts Firebase + Firestore -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
@@ -85,16 +85,8 @@ layout: default
 
     async function guardarLead(nombre, email, mensaje) {
       try {
-        // Firestore
         await addDoc(collection(db, "leads"), { nombre, email, mensaje, fecha: new Date() });
-
-        // Notificación por correo usando Netlify Function
-        await fetch("/.netlify/functions/sendLead", {
-          method: "POST",
-          body: JSON.stringify({ nombre, email, mensaje })
-        });
-
-        alert("✅ Tu mensaje se ha guardado y enviado correctamente.");
+        alert("✅ Tu mensaje se ha guardado correctamente.");
       } catch (e) {
         console.error(e);
         alert("❌ Error al enviar el mensaje.");
@@ -120,7 +112,7 @@ layout: default
   <script type="module">
     async function fetchChainstackData() {
       try {
-        const response = await fetch("/.netlify/functions/connect-chainstack");
+        const response = await fetch("/.netlify/functions/connect-chainstack"); // luego reemplazar con tu Cloud Function
         const data = await response.json();
         if (data.success) {
           document.getElementById("chainstack-data").textContent = JSON.stringify(data.data, null, 2);
@@ -134,6 +126,26 @@ layout: default
       }
     }
     window.onload = () => { fetchChainstackData(); };
+  </script>
+
+  <!-- Thirdweb SDK para Base Mainnet -->
+  <script type="module">
+    import { ThirdwebSDK } from "https://esm.sh/@thirdweb-dev/sdk";
+
+    const sdk = new ThirdwebSDK("base", {
+      clientId: "1964573e38575f18354d6e931234fa2c" // tu Client ID
+    });
+
+    console.log("SDK conectado a Base Mainnet", sdk);
+
+    // Ejemplo de función para mostrar balance
+    async function mostrarBalance(address) {
+      const balance = await sdk.wallet.getBalance(address);
+      console.log("Balance de", address, ":", balance);
+    }
+
+    // Llamada de prueba
+    mostrarBalance("0x..."); // reemplaza con la dirección que quieras consultar
   </script>
 
 </body>
