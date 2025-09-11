@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: gcr.io/useful-memory-464107-d6/desbroces-web:latest
+        image: gcr.io/useful-memory-464107-d6/desbroces-pontevedra-site:latest
         ports:
         - containerPort: 8080
 

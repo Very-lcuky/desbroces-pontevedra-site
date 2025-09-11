@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: desbroces-web-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: desbroces-pontevedra.fun
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: desbroces-web-lb
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - desbroces-pontevedra.fun
+    secretName: desbroces-pontevedra-tls
+

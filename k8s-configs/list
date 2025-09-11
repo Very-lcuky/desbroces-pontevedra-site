@@ -1,0 +1,6 @@
+gcloud container fleet config-management git import \
+  --membership=desbroces-cluster \
+  --repo=https://github.com/Very-lcuky/desbroces-pontevedra-site.git \
+  --branch=main \
+  --policy-dir=k8s-configs \
+  --source-format=hierarchical

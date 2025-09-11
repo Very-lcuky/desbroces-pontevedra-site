@@ -25,6 +25,7 @@ docker-compose.override.yml
 # Kubernetes / GKE
 .kube/
 *.kubeconfig
+# NOT ignore your cluster files (keep Deployment.yaml, LoadBalancer.yaml, k8s-configs/) 
 
 # Google Cloud SDK (no subir al repo)
 google-cloud-sdk/
@@ -37,4 +38,15 @@ google-cloud-cli-*.tar.gz
 .idea/
 .vscode/
 *.iml
+
+# Secrets y claves
+THIRDWEB_SECRET_KEY
+GCP_SA_KEY
+
+# Foundry / Solidity
+mi-proyecto/lib/
+mi-proyecto/src/
+mi-proyecto/test/
+mi-proyecto/foundry.lock
+mi-proyecto/foundry.toml
 
