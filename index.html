@@ -112,7 +112,7 @@ layout: default
   <script type="module">
     async function fetchChainstackData() {
       try {
-        const response = await fetch("/.netlify/functions/connect-chainstack"); // luego reemplazar con tu Cloud Function
+        const response = await fetch("/.netlify/functions/connect-chainstack"); // reemplazar según tu Cloud Function
         const data = await response.json();
         if (data.success) {
           document.getElementById("chainstack-data").textContent = JSON.stringify(data.data, null, 2);
@@ -128,24 +128,38 @@ layout: default
     window.onload = () => { fetchChainstackData(); };
   </script>
 
-  <!-- Thirdweb SDK para Base Mainnet -->
+  <!-- Thirdweb SDK invisible -->
   <script type="module">
     import { ThirdwebSDK } from "https://esm.sh/@thirdweb-dev/sdk";
 
-    const sdk = new ThirdwebSDK("base", {
-      clientId: "1964573e38575f18354d6e931234fa2c" // tu Client ID
-    });
+    const clientId = "1964573e38575f18354d6e931234fa2c"; // tu Client ID
+    const sdk = new ThirdwebSDK("base", { clientId });
 
-    console.log("SDK conectado a Base Mainnet", sdk);
+    const walletAddress = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
+    const contractAddress1 = "TU_CONTRACT_ADDRESS_1"; // reemplaza
+    const contractAddress2 = "TU_CONTRACT_ADDRESS_2"; // reemplaza si tienes otro contrato
 
-    // Ejemplo de función para mostrar balance
-    async function mostrarBalance(address) {
-      const balance = await sdk.wallet.getBalance(address);
-      console.log("Balance de", address, ":", balance);
+    async function initThirdweb() {
+      try {
+        const contract1 = await sdk.getContract(contractAddress1);
+        const contract2 = contractAddress2 ? await sdk.getContract(contractAddress2) : null;
+
+        // Aquí puedes interactuar con tus smart contracts
+        const balance1 = await contract1.call("balanceOf", [walletAddress]);
+        console.log("Contrato 1 balance:", balance1.toString());
+
+        if(contract2){
+          const balance2 = await contract2.call("balanceOf", [walletAddress]);
+          console.log("Contrato 2 balance:", balance2.toString());
+        }
+
+        // Más llamadas a contratos se pueden agregar aquí
+      } catch (err) {
+        console.error("Error en Thirdweb:", err);
+      }
     }
 
-    // Llamada de prueba
-    mostrarBalance("0x..."); // reemplaza con la dirección que quieras consultar
+    window.addEventListener("load", initThirdweb);
   </script>
 
 </body>
