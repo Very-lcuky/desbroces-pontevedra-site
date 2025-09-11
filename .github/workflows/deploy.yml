@@ -1,4 +1,4 @@
-name: Deploy to Google Cloud Run
+name: Deploy to Cloud Run
 
 on:
   push:
@@ -9,21 +9,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
-      THIRDWEB_SECRET_KEY: ${{ secrets.THIRDWEB_SECRET_KEY }}
-      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
         with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
+          version: 'latest'
 
       - name: Authenticate Google Cloud
         run: |
@@ -33,25 +26,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/useful-memory-464107-d6/my-service:latest .
-
-      - name: Push Docker image to Google Container Registry
-        run: |
-          gcloud auth configure-docker
-          docker push gcr.io/useful-memory-464107-d6/my-service:latest
+          gcloud builds submit --tag gcr.io/useful-memory-464107-d6/my-image .
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy my-service \
-            --image gcr.io/useful-memory-464107-d6/my-service:latest \
+            --image gcr.io/useful-memory-464107-d6/my-image \
             --region us-central1 \
             --platform managed \
             --allow-unauthenticated
-
-      - name: Test Thirdweb SDK
-        run: |
-          node -e "import('https://esm.sh/@thirdweb-dev/sdk').then(({ ThirdwebSDK }) => {
-            const sdk = new ThirdwebSDK('base', { clientId: process.env.THIRDWEB_SECRET_KEY });
-            console.log('SDK conectado a Base Mainnet', sdk);
-          });"
 
