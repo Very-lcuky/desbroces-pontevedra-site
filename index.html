@@ -117,7 +117,7 @@ layout: default
   <script type="module">
     async function fetchChainstackData() {
       try {
-        const response = await fetch("/.cloudfunctions/connect-chainstack"); // Ajusta según tu función en Google Cloud
+        const response = await fetch("/.cloudfunctions/connect-chainstack"); 
         const data = await response.json();
         if (data.success) {
           document.getElementById("chainstack-data").textContent = JSON.stringify(data.data, null, 2);
@@ -133,50 +133,45 @@ layout: default
     window.onload = () => { fetchChainstackData(); };
   </script>
 
-  <!-- Thirdweb SDK invisible -->
+  <!-- Thirdweb SDK completo -->
   <script type="module">
     import { ThirdwebSDK } from "https://esm.sh/@thirdweb-dev/sdk";
 
-    const clientId = "1964573e38575f18354d6e931234fa2c"; // tu Client ID
-    const sdk = new ThirdwebSDK("base", { clientId });
-
+    const sdk = new ThirdwebSDK("base"); // Conectamos a Base
     const walletAddress = "0x692018bED36405fD85d9f9531A146cA3b0aE45a0";
-    const contractAddress1 = "TU_CONTRACT_ADDRESS_1"; // reemplaza
-    const contractAddress2 = "TU_CONTRACT_ADDRESS_2"; // opcional
+    const tokenAddress = "0x81913Cd2C1a4e0bDf1a66B2180AD12B66C1a5437"; // DRBP
+
+    let tokenContract;
 
     async function initThirdweb() {
       try {
-        const contract1 = await sdk.getContract(contractAddress1);
-        const contract2 = contractAddress2 ? await sdk.getContract(contractAddress2) : null;
+        tokenContract = await sdk.getToken(tokenAddress);
 
-        const balance1 = await contract1.call("balanceOf", [walletAddress]);
-        console.log("Contrato 1 balance:", balance1.toString());
+        const balance = await tokenContract.balanceOf(walletAddress);
+        console.log("Saldo DRBP:", balance.displayValue);
 
-        if (contract2) {
-          const balance2 = await contract2.call("balanceOf", [walletAddress]);
-          console.log("Contrato 2 balance:", balance2.toString());
-        }
+        // Opcional: mostrar saldo en la web
+        const balanceEl = document.createElement("p");
+        balanceEl.textContent = `Saldo DRBP: ${balance.displayValue}`;
+        document.querySelector(".container").appendChild(balanceEl);
 
       } catch (err) {
-        console.error("Error en Thirdweb:", err);
+        console.error("Error inicializando Thirdweb:", err);
       }
     }
 
     window.addEventListener("load", initThirdweb);
 
-    // Función para llamar a tu Cloud Function y enviar transacción
     document.getElementById("mintBtn").addEventListener("click", async () => {
-      const response = await fetch("https://REGION-PROJECT_ID.cloudfunctions.net/mintTokens", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: walletAddress,
-          amount: "100"
-        })
-      });
-
-      const data = await response.json();
-      console.log("Resultado mint:", data);
+      try {
+        const amount = 100; // Cantidad a mintear
+        const tx = await tokenContract.mintTo(walletAddress, amount);
+        console.log("Mint exitoso:", tx.receipt.transactionHash);
+        alert("✅ Mint completado!");
+      } catch (err) {
+        console.error("Error al mintear:", err);
+        alert("❌ Error al mintear.");
+      }
     });
   </script>
 
